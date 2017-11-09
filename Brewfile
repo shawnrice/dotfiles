@@ -1,87 +1,110 @@
 # See https://github.com/Homebrew/homebrew-bundle
 cask_args appdir: "/Applications"
 
-tap "caskroom/cask"
-brew "imagemagick"
-
-cask "google-chrome"
-
-tap "beeftornado/rmtree"
-
+# Tap a few things first
 tap "homebrew/bundle"
 tap "homebrew/core"
-tap "homebrew/php"
 tap "homebrew/services"
+tap "beeftornado/rmtree"
 
 # Tap some casks
 tap "caskroom/cask"
 tap "caskroom/fonts"
 
-cask "xquartz"
+# Some core things / dependencies
 brew "autoconf"
 brew "automake"
 brew "boost"
-brew "gettext"
 brew "coreutils"
-brew "zeromq"
+brew "highlight"
+brew "icu4c"
+brew "libevent"
+brew "libsodium"
+brew "libtool"
+brew "libyaml"
+brew "pcre"
+brew "pkg-config"
+
+# Languages
+brew "go"
+brew "lua"
+brew "node"
+brew "rust"
+
+# Databases / MQs / Cache Layers
 brew "czmq"
-brew "dcraw"
 brew "elasticsearch"
+brew "memcached"
+brew "mongodb"
+brew "mysql" # upgrade mysql
+brew "postgresql", restart_service: true
+brew "redis"
+brew "sqlite"
+brew "zeromq"
+
+# Webservers
+brew "nginx"
+
+
+#######
+# Media
+#######
+
+# Images
+brew "imagemagick"
+# Image optimization
+brew "jpeg-archive"
+brew "jpegoptim"
+brew "pngcrush"
+brew "pngquant"
+
+# Image format libs
+brew "mozjpeg"
+brew "dcraw"
+
+# Audio / Video
+
+# convert / reencode video
+brew "ffmpeg"
+brew "mplayer"
+
+# Codecs
 brew "lame"
 brew "x264"
 brew "xvid"
-brew "ffmpeg"
-
-brew "icu4c"
-brew "libtool"
-brew "fontforge"
-brew "libgpg-error"
-brew "libksba"
-brew "gnupg"
-brew "go"
-brew "lua"
-brew "highlight"
-brew "htop"
-brew "httrack"
-brew "hub"
-brew "imagemagick"
-brew "mozjpeg"
-brew "jpeg-archive"
-brew "jpegoptim"
-brew "libevent"
-brew "libsndfile"
-brew "libsodium"
 brew "libvo-aacenc"
-brew "libxml2"
-brew "libyaml"
-brew "memcached"
-brew "mongodb"
-brew "mplayer"
-brew "mysql"
-brew "nginx"
-brew "node"
-brew "pngcrush"
-brew "pngquant"
-brew "sqlite"
-brew "postgresql", restart_service: true
-brew "potrace"
-brew "redis"
-brew "rust"
-brew "siege"
+brew "libsndfile"
+
+# Utilities
+brew "htop"
 brew "the_silver_searcher"
 brew "thefuck"
-brew "tidy-html5"
-brew "tree"
-brew "unixodbc"
-brew "unrar"
-brew "watchman"
 brew "wget"
-brew "homebrew/php/php-code-sniffer"
-brew "homebrew/php/php-code-sniffer@2.9"
-brew "homebrew/php/phplint"
-brew "homebrew/php/phpunit"
+brew "hub" # A better github
+brew "tree"
+brew "unrar"
+brew "siege"
+brew "watchman"
+
+# cask "mactex" # mactex is huge
+
+#### Cask Applications
+cask "alfred"
+cask "google-chrome"
+cask "iterm2"
+cask "nvalt"
+cask "slack"
+cask "flux"
+cask "vlc"
+
+# More archives
+cask "the-unarchiver"
+
+# PDF Reader
+cask "skim"
+
+# Quick look extensions
 cask "betterzipql"
-cask "mactex"
 cask "qlcolorcode"
 cask "qlimagesize"
 cask "qlmarkdown"
@@ -89,36 +112,14 @@ cask "qlprettypatch"
 cask "qlstephen"
 cask "quicklook-csv"
 cask "quicklook-json"
-cask "robomongo"
-cask "skim"
 cask "webpquicklook"
+
+# Simple Launch Agent Control
 cask "lunchy"
 
 # Key Visualization for webcasting
 # https://github.com/keycastr/keycastr
 cask "keycastr"
-
-# Install Cask
-install caskroom/cask/brew-cask
-
-# Install Casks
-cask install alfred
-cask install caffeine
-cask install flux
-
-cask install virtualbox
-cask install vagrant
-
-cask install google-chrome
-cask install iterm2
-cask install sequel-pro
-cask install macvim
-
-cask install nvalt
-cask install slack
-cask install vlc
-cask install the-unarchiver
-
 
 ## FONTS
 # See https://github.com/caskroom/homebrew-fonts
