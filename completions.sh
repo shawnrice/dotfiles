@@ -1,0 +1,1 @@
+# source_if_exists "${HOME}/.nvm/bash_completion"
