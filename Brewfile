@@ -45,7 +45,6 @@ brew "zeromq"
 # Webservers
 brew "nginx"
 
-
 #######
 # Media
 #######
@@ -85,6 +84,10 @@ brew "tree"
 brew "unrar"
 brew "siege"
 brew "watchman"
+brew "bash-completion"
+
+# https://github.com/mas-cli/mas
+brew "mas" # Automatically downloads things from the Apple Store
 
 # cask "mactex" # mactex is huge
 
@@ -114,6 +117,15 @@ cask "quicklook-csv"
 cask "quicklook-json"
 cask "webpquicklook"
 
+# Developer documentation
+cask "dash"
+
+# We need tunes
+cask "spotify"
+
+# Window Manager
+cask "spectacle"
+
 # Simple Launch Agent Control
 cask "lunchy"
 
@@ -133,3 +145,12 @@ cask "font-mononoki"
 cask "font-roboto"
 cask "font-roboto-mono"
 cask "font-source-code-pro"
+
+# Lastly, Mac App Store things
+mas "1Password", id: 443987910
+mas "Marked", id: 448925439
+mas "1Password", id: 443987910
+mas "Gemini", id: 463541543
+mas "Disk Expert", id: 488920185
+mas "Textual", id: 896450579
+
