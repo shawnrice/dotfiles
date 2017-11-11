@@ -37,7 +37,9 @@ function install_homebrew() {
 }
 
 function intall_pip() {
+	# Pip is not installed by default
 	sudo easy_install pip
+	# Pip is likely to be a an older version, so we'll immediately upgrade
 	sudo pip install --upgrade pip
 }
 
@@ -50,41 +52,21 @@ else_run nvm install_nvm
 # Install rvm if it doesn't exist
 else_run rvm install_rvm
 
-
-# Homebrew packages
-read -r -d '' HOMEBREW_PACKAGES <<'END_HOMEBREW_PACKAGES'
-awscli
-cask
-coreutils
-darkmode
-elasticsearch
-go
-htop
-hub
-icu4c
-imagemagick
-memcached
-node
-openssl
-lua
-readline
-direnv
-postgresql
-redis
-rust
-speedtest_cli
-the_silver_searcher
-thefuck
-tree
-yarn
-zeromq
-END_HOMEBREW_PACKAGES
+# At this point, we need to install the brewfiles
+brew bundle
 
 read -r -d '' PIP_MODULES <<'END_PIP_MODULES'
-
-
+Pygments
+CodeIntel
+powerline-shell
 END_PIP_MODULES
 
 read -r -d '' NODE_MODULES <<'END_NODE_MODULES'
 osx-wifi-cli
 END_NODE_MODULES
+
+pip install --user $PIP_MODULES
+npm install -g $NODE_MODULES
+
+# Symlink Sublime CLI
+sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/bin/subl

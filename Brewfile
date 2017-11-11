@@ -100,6 +100,10 @@ cask "slack"
 cask "flux"
 cask "vlc"
 
+# Code Editors
+cask "sublime-text"
+cask "visual-studio-code"
+
 # More archives
 cask "the-unarchiver"
 

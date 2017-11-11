@@ -6,6 +6,8 @@ function eval_if_command_exists() {
 	[[ ! -z $(which $1) ]] && $2
 }
 
+##
+# Colored Man Pages
 function man() {
     env \
     LESS_TERMCAP_mb=$(printf "\e[1;31m") \
@@ -18,6 +20,8 @@ function man() {
     man "$@"
 }
 
+##
+# Colored cat
 function cat() {
     local out colored
     out=$(/bin/cat $@)
@@ -25,6 +29,8 @@ function cat() {
     [[ -n $colored ]] && echo "$colored" || echo "$out"
 }
 
+##
+# Grabs current finder window
 function cdf() {
     target=`osascript -e 'tell application "Finder" to if (count of Finder windows) > 0 then get POSIX path of (target of front Finder window as text)'`
     if [ "$target" != "" ]; then

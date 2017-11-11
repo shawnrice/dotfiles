@@ -198,15 +198,30 @@ function __print_git_info() {
 	echo $str
 }
 
-function run_with_sudo() {
-	[[ $(id -u) -eq 0 ]]
-}
 
 function __print_end_with_error_code() {
-	if [[ $1 == "0" ]]; then
-		echo " $ "
+	# This might not work correctly
+	local end
+
+	if [[ is_git_repo ]]; then
+		if [[ is_git_dirty ]]; then
+			end=$(__clr 155 0 0 $(__clr_b 30 30 30 ))
+		else
+			end=$(__clr 0 155 0 $(__clr_b 30 30 30 ))
+		fi
+	fi
+
+	if [[ $(id -u) -eq 0 ]]; then
+		end="${end}$( __clr 200 200 200 $(__clr_b 30 30 30 " # " ))"
 	else
-		echo
+		end="${end}$( __clr 200 200 200 $(__clr_b 30 30 30 " $ " ))"
+	fi
+
+	if [[ $1 == "0" ]]; then
+		echo "$end$(__clr 30 30 30 )"
+	else
+		echo "$end$(__clr 30 30 30 $(__clr_b 255 0 0 ))$(__clr_b 255 0 0 $1)$(__clr 255 0 0  )"
+	fi
 }
 
 
@@ -219,10 +234,10 @@ function __get_end() {
 }
 
 function __write_prompt() {
+	# Save the last error code
 	local error_code=$?
-	echo $error_code
-
-	echo $(__clr_username)$(__print_path_info)$(__print_git_info) $(__get_end)
+	# Assemble all the pieces
+	echo $(__clr_username)$(__print_path_info)$(__print_git_info)$(__print_end_with_error_code $error_code)$(__get_end)
 }
 
 rbw_position_get_cursor_position(){

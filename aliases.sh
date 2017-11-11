@@ -24,7 +24,6 @@ alias ios="open '/Applications/Xcode.app/Contents/Developer/Applications/Simulat
 # ls alias for color-mode
 alias lh='ls -lhaG'
 
-
 # grep with color
 alias grep='grep -in --color=auto'
 
