@@ -56,3 +56,19 @@ open "${HOME}/init/Solarized Dark.itermcolors"
 
 # Don’t display the annoying prompt when quitting iTerm
 defaults write com.googlecode.iterm2 PromptOnQuit -bool false
+
+
+defaults write com.googlecode.iterm2 DimBackgroundWindows -bool true;
+defaults write com.googlecode.iterm2 DimInactiveSplitPanes -bool true;
+defaults write com.googlecode.iterm2 DimOnlyText -bool false;
+defaults write com.googlecode.iterm2 DisableFullscreenTransparency -bool true;
+
+defaults write com.googlecode.iterm2 FsTabDelay -bool true;
+defaults write com.googlecode.iterm2 HiddenAFRStrokeThickness -bool false;
+defaults write com.googlecode.iterm2 HiddenAdvancedFontRendering -bool false;
+defaults write com.googlecode.iterm2 HideActivityIndicator -bool false;
+defaults write com.googlecode.iterm2 HideMenuBarInFullscreen -bool true;
+defaults write com.googlecode.iterm2 HideScrollbar -bool true;
+defaults write com.googlecode.iterm2 HideTab -bool true;
+defaults write com.googlecode.iterm2 HighlightTabLabels -bool true;
+defaults write com.googlecode.iterm2 UseCompactLabel -bool true;
