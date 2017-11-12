@@ -1,5 +1,9 @@
 #!/bin/bash
 
+source functions.sh
+source aliases.sh
+source path.sh
+
 ############
 ### Versions
 ############
@@ -7,7 +11,9 @@
 NVM_VERSION='v0.33.6'
 
 function else_run() {
-	[[ -z command -v $1 ]] && $2
+	if [[ -z $(command -v $1) ]]; then
+		eval $2
+	fi
 }
 
 # Install catlight
@@ -44,16 +50,16 @@ function intall_pip() {
 }
 
 # Install Homebrew if it doesn't exist
-else_run brew install_homebrew
+else_run "brew" "install_homebrew"
 # Install Up if it doesn't exist
-else_run up install_up
+else_run "up" "install_up"
 # Install NVM if it doesn't exist
-else_run nvm install_nvm
+else_run "nvm" "install_nvm"
 # Install rvm if it doesn't exist
-else_run rvm install_rvm
+else_run "rvm" "install_rvm"
 
 # At this point, we need to install the brewfiles
-brew bundle
+# brew bundle
 
 read -r -d '' PIP_MODULES <<'END_PIP_MODULES'
 Pygments
@@ -69,5 +75,5 @@ END_NODE_MODULES
 pip install --user $PIP_MODULES
 npm install -g $NODE_MODULES
 
-# Symlink Sublime CLI
-sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/bin/subl
+# Symlink Sublime CLI if it doesn't exist
+[[ -z $(command -v subl) ]] && sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/bin/subl

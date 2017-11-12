@@ -137,6 +137,9 @@ cask "lunchy"
 # https://github.com/keycastr/keycastr
 cask "keycastr"
 
+# For endpoint testing
+cask "paw"
+
 ## FONTS
 # See https://github.com/caskroom/homebrew-fonts
 # We might have to change the appdir here
@@ -157,4 +160,3 @@ mas "1Password", id: 443987910
 mas "Gemini", id: 463541543
 mas "Disk Expert", id: 488920185
 mas "Textual", id: 896450579
-
