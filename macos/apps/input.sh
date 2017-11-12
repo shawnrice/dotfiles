@@ -51,4 +51,4 @@ sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bo
 sudo systemsetup -settimezone "America/New_York" > /dev/null
 
 # Stop iTunes from responding to the keyboard media keys
-#launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
+launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null

@@ -62,6 +62,7 @@ powerline-shell
 END_PIP_MODULES
 
 read -r -d '' NODE_MODULES <<'END_NODE_MODULES'
+cost-of-modules
 osx-wifi-cli
 END_NODE_MODULES
 

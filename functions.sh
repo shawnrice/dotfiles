@@ -2,8 +2,8 @@ function source_if_exists() {
 	[[ -s "$1" ]] && source "$1"
 }
 
-function eval_if_command_exists() {
-	[[ ! -z $(which $1) ]] && $2
+function command_exists() {
+	[[ ! -z "$(command -v $1)" ]]
 }
 
 ##
