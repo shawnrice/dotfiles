@@ -1,0 +1,35 @@
+{
+	"align_indent": true,
+	"alignment_chars":
+	[
+		"=",
+		":"
+	],
+	"alignment_prefix_chars":
+	[
+		"+",
+		"-",
+		"&",
+		"|",
+		"<",
+		">",
+		"!",
+		"~",
+		"%",
+		"/",
+		"*",
+		".",
+		":"
+	],
+	"alignment_space_chars":
+	[
+		"="
+	],
+	"extensions":
+	[
+		"scss.erb",
+		"scss.liquid",
+		"scss"
+	],
+	"mid_line_tabs": false
+}

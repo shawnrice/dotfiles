@@ -140,6 +140,9 @@ cask "keycastr"
 # For endpoint testing
 cask "paw"
 
+# File comparison application
+cask "deltawalker"
+
 ## FONTS
 # See https://github.com/caskroom/homebrew-fonts
 # We might have to change the appdir here

@@ -1,0 +1,109 @@
+{
+    "user": {
+        "debug": false,
+        "delay": 0.25,
+        "error_color": "D02000",
+        "gutter_theme": "Packages/Material Theme/gutter-theme/Material-Theme.gutter-theme",
+        "gutter_theme_excludes": [],
+        "lint_mode": "load/save",
+        "linters": {
+            "eslint": {
+                "@disable": false,
+                "args": [],
+                "excludes": [
+                    "dist/*",
+                    "node_modules/*"
+                ]
+            },
+            "htmltidy": {
+                "@disable": true,
+                "args": [],
+                "excludes": []
+            },
+            "jshint": {
+                "@disable": true,
+                "args": [
+                    "--config",
+                    "/Users/srice1271/.linters/js/.jshintrc-airbnb"
+                ],
+                "excludes": []
+            },
+            "phpcs": {
+                "@disable": false,
+                "args": [],
+                "excludes": [],
+                "standard": "WordPress-VIP"
+            },
+            "rubocop": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "ruby": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "rubylint": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "sass": {
+                "@disable": false,
+                "args": [],
+                "excludes": []
+            },
+            "sass-lint": {
+                "@disable": false,
+                "args": [],
+                "exclude-linter": "",
+                "excludes": [],
+                "include-linter": ""
+            },
+            "scss": {
+                "@disable": true,
+                "args": [],
+                "exclude-linter": "",
+                "excludes": [],
+                "include-linter": ""
+            }
+        },
+        "mark_style": "none",
+        "no_column_highlights_line": true,
+        "passive_warnings": false,
+        "paths": {
+            "linux": [],
+            "osx": [
+                "/usr/local/bin/"
+            ],
+            "windows": []
+        },
+        "python_paths": {
+            "linux": [],
+            "osx": [],
+            "windows": []
+        },
+        "rc_search_limit": 3,
+        "shell_timeout": 10,
+        "show_errors_on_save": false,
+        "show_marks_in_minimap": true,
+        "syntax_map": {
+            "JavaScript (Babel)": "javascript",
+            "html (django)": "html",
+            "html (rails)": "html",
+            "html 5": "html",
+            "javascript (babel)": "javascript",
+            "jsx": "javascript",
+            "magicpython": "python",
+            "php": "html",
+            "python django": "python"
+        },
+        "tooltip_fontsize": "1rem",
+        "tooltip_theme": "Packages/SublimeLinter/tooltip-themes/Default/Default.tooltip-theme",
+        "tooltip_theme_excludes": [],
+        "tooltips": true,
+        "warning_color": "DDB700",
+        "wrap_find": true
+    }
+}
