@@ -6,9 +6,11 @@ SUBLIME_SETTINGS_DIRECTORY="${HOME}/Library/Application Support/Sublime Text 3/P
 
 [[ ! -d "${SUBLIME_SETTINGS_DIRECTORY}" ]] && mkdir -p "${SUBLIME_SETTINGS_DIRECTORY}"
 
+ME=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
 # Install Sublime Text settings
-for f in $(ls ../st3 | sublime-); do
-	cp "../st3/${f}" "${SUBLIME_SETTINGS_DIRECTORY}/${f}"
+for f in $(ls "${ME}/../st3" | grep "sublime-"); do
+	cp "${ME}/st3/${f}" "${SUBLIME_SETTINGS_DIRECTORY}/${f}"
 done
 
 

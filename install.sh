@@ -57,9 +57,11 @@ else_run "up" "install_up"
 else_run "nvm" "install_nvm"
 # Install rvm if it doesn't exist
 else_run "rvm" "install_rvm"
+# Install pip
+else_run "pip" "install_pip"
 
 # At this point, we need to install the brewfiles
-# brew bundle
+brew bundle
 
 read -r -d '' PIP_MODULES <<'END_PIP_MODULES'
 Pygments
@@ -77,3 +79,8 @@ npm install -g $NODE_MODULES
 
 # Symlink Sublime CLI if it doesn't exist
 [[ -z $(command -v subl) ]] && sudo ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/bin/subl
+
+
+for f in $(find macos -name "*.sh"); do
+	bash "$f"
+done
