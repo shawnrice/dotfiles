@@ -24,12 +24,14 @@ brew "libtool"
 brew "libyaml"
 brew "pcre"
 brew "pkg-config"
+brew "gcc"
 
 # Languages
 brew "go"
 brew "lua"
 brew "node"
 brew "rust"
+cask "java8"
 
 # Databases / MQs / Cache Layers
 brew "czmq"
@@ -85,6 +87,9 @@ brew "unrar"
 brew "siege"
 brew "watchman"
 brew "bash-completion"
+brew "yarn"
+
+cask "dark-mode"
 
 # https://github.com/mas-cli/mas
 brew "mas" # Automatically downloads things from the Apple Store
