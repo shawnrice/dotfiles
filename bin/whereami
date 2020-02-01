@@ -1,0 +1,17 @@
+#!/usr/local/bin/node
+
+const https = require('https');
+const url = require('url');
+
+const req = https.request(url.parse('https://freegeoip.app/json/'), res => {
+  res.setEncoding('utf8');
+  res.on('data', chunk => {
+    const { city, region_code } = JSON.parse(chunk);
+    console.log(`${city}, ${region_code}`);
+  });
+  // res.on('end', () => console.log('done'));
+});
+
+req.on('error', e => console.error(e.message));
+
+req.end();
