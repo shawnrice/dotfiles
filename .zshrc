@@ -7,27 +7,37 @@ function get_dotfiles() {
   while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
     DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
     SOURCE="$(readlink "$SOURCE")"
-    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    [[ $SOURCE != /* ]] && SOURCE="${DIR}/${SOURCE}" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
   done
   DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
   echo $DIR
 }
 
+function source_if_exists() {
+  if [ -f "$1" ]; then
+    source "$1"
+  fi
+}
+
+DOT_PATH="$(get_dotfiles)"
+
 export COBBLER_PATH="${HOME}/projects/@cobbler-io/cobbler"
+export COBBLER2_PATH="${HOME}/projects/cobbler"
 
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export GOPATH="${HOME}/go"
 PATH="${PATH}:$GOPATH/bin"
-PATH="${PATH}:$(get_dotfiles)/bin"
+PATH="${PATH}:${DOT_PATH}/bin"
 # Add local node_modules
 PATH="${PATH}:./node_modules/.bin"
+PATH="${PATH}:${HOME}/.dotnet/tools"
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME=""
 
 # Uncomment the following line to change how often to auto-update (in days).
 export UPDATE_ZSH_DAYS=6
@@ -57,6 +67,8 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
+export ZSH_WAKATIME_BIN=$(brew --prefix)/bin/wakatime
+
 if ! zgen saved; then
   zgen oh-my-zsh
 
@@ -67,7 +79,7 @@ if ! zgen saved; then
   zgen oh-my-zsh plugins/git
   zgen oh-my-zsh plugins/git-extras
   zgen oh-my-zsh plugins/npm
-  zgen oh-my-zsh plugins/npx
+  # zgen oh-my-zsh plugins/npx
   zgen oh-my-zsh plugins/thefuck
   zgen oh-my-zsh plugins/vscode
   zgen oh-my-zsh plugins/yarn
@@ -88,8 +100,6 @@ if ! zgen saved; then
 
   # Theme
   # zgen load denysdovhan/spaceship-prompt spaceship
-
-  # zgen load iam4x/zsh-iterm-touchbar
   zgen save
 fi
 
@@ -115,8 +125,6 @@ function find-up() {
 	echo "$path"
 }
 
-
-
 function _fnm_autoload_hook() {
 	nvmrc_path=$(find-up .nvmrc | tr -d '[:space:]')
 
@@ -135,7 +143,7 @@ FNM_USING_LOCAL_VERSION=0
 add-zsh-hook chpwd _fnm_autoload_hook
 
 # Integrate with iterm2
-source "${HOME}/.iterm2_shell_integration.zsh"
+source "${DOT_PATH}/iterm2/.iterm2_shell_integration.zsh"
 function iterm2_print_user_vars() {
   iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
 }
@@ -163,12 +171,12 @@ _fzf_compgen_dir() {
 }
 
 
-function reload() {
-	source "${HOME}/.zshrc"
+function reload() { 
+  exec zsh
 }
 
 function brewup() {
-  brew update && brew cask update && brew upgrade && brew cask upgrade && brew doctor && brew clean
+  brew update && brew upgrade && brew upgrade --cask && brew doctor && brew clean
 }
 
 function update_shell() {
@@ -179,7 +187,7 @@ function update_shell() {
 # eval "$(hub alias -s)" # use the github `hub` wrapper around git
 
 # fnm / an nvm replacement
-eval "$(fnm env --multi)"
+eval "$(fnm env)"
 alias nvm="fnm"; # accommodate muscle memory
 
 eval $(thefuck --alias)
@@ -196,6 +204,7 @@ alias p="projects"
 alias cobbler="cd ${COBBLER_PATH}"
 alias cob="cobbler"
 alias co="cobbler"
+alias co2="cd ${COBBLER2_PATH}"
 alias dotfiles="cd ${HOME}/projects/dotfiles"
 alias zshconfig="code ~/.zshrc"
 alias ohmyzsh="code ~/.oh-my-zsh"
@@ -218,9 +227,75 @@ fi
 
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
-# Don't send MS telemetry with dotnet
+# Do not send MS telemetry with dotnet
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 _fnm_autoload_hook
+
+autoload bashcompinit
+bashcompinit
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
+if [ -d /Applications/WezTerm.app/Contents/MacOS ]; then
+  PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+  export PATH
+fi
+
+# function imgls() {
+#   "${DOT_PATH}/iterm2/imgls.sh" $@
+# }
+
+# function imgcat() {
+#   "${DOT_PATH}/iterm2/imgcat.sh" $@
+# }
+
+source_if_exists "${HOME}/.cargo/env"
+source_if_exists  "${DOT_PATH}/git-cleanup.zsh"
+source_if_exists "${DOT_PATH}/cobbler-commands.zsh"
+
+export PATH="/usr/local/sbin:$PATH"
+
+# Used to profile things
+# zmodload zsh/zprof
+
+source "${DOT_PATH}/nvim.zsh"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/shawn/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/shawn/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/shawn/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/shawn/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/shawn/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "${HOME}/miniconda3/etc/profile.d/conda.sh" ]; then
+        source "${HOME}/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="${HOME}/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# bun completions
+[ -s "/Users/shawn/.bun/_bun" ] && source "/Users/shawn/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+source_if_exists "${HOME}/.fzf.sh"
 
 echo "Loaded in ${SECONDS} seconds"

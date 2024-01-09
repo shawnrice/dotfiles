@@ -2,14 +2,17 @@
 cask_args appdir: "/Applications"
 
 # Tap a few things first
+tap "beeftornado/rmtree"
+tap "codeclimate/formulae"
+tap "heroku/brew"
 tap "homebrew/bundle"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+
 tap "homebrew/core"
 tap "homebrew/services"
-tap "beeftornado/rmtree"
-
-# Tap some casks
-tap "caskroom/cask"
-tap "caskroom/fonts"
+tap "joshuaclayton/formulae"
+tap "schniz/tap"
 
 # Some core things / dependencies
 brew "autoconf"
@@ -31,21 +34,19 @@ brew "go"
 brew "lua"
 brew "node"
 brew "rust"
-cask "java8"
 
 # Databases / MQs / Cache Layers
-brew "czmq"
-brew "elasticsearch"
-brew "memcached"
-brew "mongodb"
-brew "mysql" # upgrade mysql
-brew "postgresql", restart_service: true
-brew "redis"
-brew "sqlite"
-brew "zeromq"
+# brew "czmq"
+# brew "elasticsearch"
+# brew "memcached"
+# brew "mysql" # upgrade mysql
+# brew "postgresql", restart_service: true
+# brew "redis"
+# brew "sqlite"
+# brew "zeromq"
 
 # Webservers
-brew "nginx"
+# brew "nginx"
 
 #######
 # Media
@@ -67,7 +68,6 @@ brew "dcraw"
 
 # convert / reencode video
 brew "ffmpeg"
-brew "mplayer"
 
 # Codecs
 brew "lame"
@@ -88,8 +88,8 @@ brew "siege"
 brew "watchman"
 brew "bash-completion"
 brew "yarn"
-
-cask "dark-mode"
+brew "fnm"
+brew "starship"
 
 # https://github.com/mas-cli/mas
 brew "mas" # Automatically downloads things from the Apple Store
@@ -98,15 +98,20 @@ brew "mas" # Automatically downloads things from the Apple Store
 
 #### Cask Applications
 cask "alfred"
+cask "bartender"
+cask "dropbox"
+cask "flux"
 cask "google-chrome"
+cask "hammerspoon"
+
 cask "iterm2"
+cask "ngrok"
 cask "nvalt"
 cask "slack"
-cask "flux"
+cask "virtualbox"
 cask "vlc"
 
 # Code Editors
-cask "sublime-text"
 cask "visual-studio-code"
 
 # More archives
@@ -116,7 +121,7 @@ cask "the-unarchiver"
 cask "skim"
 
 # Quick look extensions
-cask "betterzipql"
+cask "betterzipa"
 cask "qlcolorcode"
 cask "qlimagesize"
 cask "qlmarkdown"
@@ -145,9 +150,6 @@ cask "keycastr"
 # For endpoint testing
 cask "paw"
 
-# File comparison application
-cask "deltawalker"
-
 ## FONTS
 # See https://github.com/caskroom/homebrew-fonts
 # We might have to change the appdir here
@@ -163,8 +165,7 @@ cask "font-source-code-pro"
 
 # Lastly, Mac App Store things
 mas "1Password", id: 443987910
-mas "Marked", id: 448925439
-mas "1Password", id: 443987910
-mas "Gemini", id: 463541543
 mas "Disk Expert", id: 488920185
-mas "Textual", id: 896450579
+mas "FuzzyTime", id: 950297057
+mas "Gemini", id: 463541543
+mas "Marked", id: 448925439

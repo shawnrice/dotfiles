@@ -9,7 +9,7 @@ const req = https.request(url.parse('https://freegeoip.app/json/'), res => {
     const { city, region_code } = JSON.parse(chunk);
     console.log(`${city}, ${region_code}`);
   });
-  // res.on('end', () => console.log('done'));
+  res.on('end', () => console.log('done'));
 });
 
 req.on('error', e => console.error(e.message));

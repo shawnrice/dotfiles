@@ -215,4 +215,4 @@ pushInsteadOf = "git://gist.github.com/"
 
 insteadOf = "gist:"
 [pull]
-	rebase = false
+rebase = false
