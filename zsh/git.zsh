@@ -1,1 +1,1 @@
-source_if_exists "${DOT_PATH}/zsh/git/cleanup.zsh"
+source_if_exists "${DOTS}/zsh/git/cleanup.zsh"

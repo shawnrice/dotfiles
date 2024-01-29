@@ -78,7 +78,7 @@ function install_zgen() {
   git clone --depth 1 https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 }
 
-function install_iterm_shell_integration {
+function install_iterm_shell_integration() {
   # curl -L https://iterm2.com/shell_integration/zsh -o ~/.iterm2_shell_integration.zsh
 }
 

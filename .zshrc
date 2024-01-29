@@ -1,55 +1,59 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
+
 typeset -F 3 SECONDS=0
 
-function get_dotfiles() {
+function get_dots() {
   # SOURCE="${(%):-%N}"
   SOURCE=${BASH_SOURCE[0]:-${(%):-%x}}
-  while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  # resolve $SOURCE until the file is no longer a symlink
+  while [ -h "$SOURCE" ]; do 
     DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
     SOURCE="$(readlink "$SOURCE")"
-    [[ $SOURCE != /* ]] && SOURCE="${DIR}/${SOURCE}" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    [[ $SOURCE != /* ]] && SOURCE="${DIR}/${SOURCE}" 
   done
   DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
   echo $DIR
 }
 
+DOTS="$(get_dots)"
+unset get_dots
 
-DOT_PATH="$(get_dotfiles)"
-
-source "${DOT_PATH}/lib/lib.sh" # Helpers needed further down
-
+# Add a couple of things to the path
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-PATH="${PATH}:${DOT_PATH}/bin" # Add the dotfiles bin to the path
+PATH="${PATH}:${DOTS}/bin" # Add the dotfiles bin to the path
+
+source "${DOTS}/lib/lib.sh" # Helpers needed further down
 
 # Load Oh-My-Zsh first
-source "${DOT_PATH}/zsh/omz.zsh"
+source "${DOTS}/zsh/omz.zsh"
 
-source "${DOT_PATH}/zsh/cmp.zsh" # Add more completion
+source "${DOTS}/zsh/cmp.zsh" # Add more completion
 
-source "${DOT_PATH}/zsh/aliases.zsh"
-source "${DOT_PATH}/zsh/brew.zsh"
-source "${DOT_PATH}/zsh/fzf.zsh" # Add fzf config
-source "${DOT_PATH}/zsh/git.zsh"
-source "${DOT_PATH}/zsh/starship.zsh" # Configure prompt
-source "${DOT_PATH}/zsh/utils.zsh"
-source "${DOT_PATH}/zsh/wezterm.zsh"
+source "${DOTS}/zsh/aliases.zsh"
+source "${DOTS}/zsh/brew.zsh"
+source "${DOTS}/zsh/fzf.zsh" # Add fzf config
+source "${DOTS}/zsh/git.zsh"
+source "${DOTS}/zsh/starship.zsh" # Configure prompt
+source "${DOTS}/zsh/utils.zsh"
+source "${DOTS}/zsh/wezterm.zsh"
 
 
 # Add different programming env paths and tool bins
-source "${DOT_PATH}/zsh/bun.zsh"
-source "${DOT_PATH}/zsh/dotnet.zsh"
-source "${DOT_PATH}/zsh/fnm.zsh" # Configure the fast node manager
-source "${DOT_PATH}/zsh/go.zsh"
-source "${DOT_PATH}/zsh/node.zsh"
-source "${DOT_PATH}/zsh/rust.zsh"
-source "${DOT_PATH}/zsh/yarn.zsh"
+source "${DOTS}/zsh/bun.zsh"
+source "${DOTS}/zsh/dotnet.zsh"
+source "${DOTS}/zsh/fnm.zsh" # Configure the fast node manager
+source "${DOTS}/zsh/go.zsh"
+source "${DOTS}/zsh/node.zsh"
+source "${DOTS}/zsh/rust.zsh"
+source "${DOTS}/zsh/yarn.zsh"
 
 
-source "${DOT_PATH}/zsh/color_cat.zsh" # Add colors to cat
-source "${DOT_PATH}/zsh/color_man_pages.zsh" # Add colors to man page
+source "${DOTS}/zsh/color_cat.zsh" # Add colors to cat
+source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
 
-source "${DOT_PATH}/zsh/nvim.zsh"
+source "${DOTS}/zsh/nvim.zsh"
 
 eval $(thefuck --alias)
 
@@ -69,27 +73,14 @@ eval $(thefuck --alias)
 # The color codes (like 34, 35, etc.) are ANSI color codes. 'di', 'ln', etc., are file type indicators.
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
-source_if_exists "${DOT_PATH}/cobbler-commands.zsh"
+# Untracked things for the work computer
+source_if_exists "${DOTS}/zsh/work/aliases.zsh"
+source_if_exists "${DOTS}/zsh/work/commands.zsh"
 
 # Used to profile things
 # zmodload zsh/zprof
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/shawn/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "${HOME}/miniconda3/etc/profile.d/conda.sh" ]; then
-        source "${HOME}/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="${HOME}/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 # De-duplicate PATH elements
-source "${DOT_PATH}/lib/dedupe_path.sh"
+source "${DOTS}/lib/dedupe_path.sh"
 
 echo "Loaded in ${SECONDS} seconds"
