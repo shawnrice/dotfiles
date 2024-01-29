@@ -1,0 +1,13 @@
+export COBBLER_PATH="${HOME}/projects/@cobbler-io/cobbler"
+export COBBLER2_PATH="${HOME}/projects/cobbler"
+
+alias projects="cd ${HOME}/projects"
+alias p="projects"
+alias cobbler="cd ${COBBLER_PATH}"
+alias co="cobbler"
+alias co2="cd ${COBBLER2_PATH}"
+alias dotfiles="cd ${HOME}/projects/dotfiles"
+alias zshconfig="code ~/.zshrc"
+alias ohmyzsh="code ~/.oh-my-zsh"
+alias github="hub"
+alias gco="git checkout"

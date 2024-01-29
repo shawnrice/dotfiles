@@ -1,2 +1,1 @@
-source "./functions.sh"
-source "./aliases.sh"
+# This is blank right now... use zsh

@@ -13,264 +13,66 @@ function get_dotfiles() {
   echo $DIR
 }
 
-function source_if_exists() {
-  if [ -f "$1" ]; then
-    source "$1"
-  fi
-}
 
 DOT_PATH="$(get_dotfiles)"
 
-export COBBLER_PATH="${HOME}/projects/@cobbler-io/cobbler"
-export COBBLER2_PATH="${HOME}/projects/cobbler"
+source "${DOT_PATH}/lib/lib.sh" # Helpers needed further down
 
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export GOPATH="${HOME}/go"
-PATH="${PATH}:$GOPATH/bin"
-PATH="${PATH}:${DOT_PATH}/bin"
-# Add local node_modules
-PATH="${PATH}:./node_modules/.bin"
-PATH="${PATH}:${HOME}/.dotnet/tools"
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+PATH="${PATH}:${DOT_PATH}/bin" # Add the dotfiles bin to the path
 
-# Path to your oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME=""
+# Load Oh-My-Zsh first
+source "${DOT_PATH}/zsh/omz.zsh"
 
-# Uncomment the following line to change how often to auto-update (in days).
-export UPDATE_ZSH_DAYS=6
+source "${DOT_PATH}/zsh/cmp.zsh" # Add more completion
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-ZSH_ALIAS_FINDER_AUTOMATIC=true
-
-# Source zgen first
-source "${HOME}/.zgen/zgen.zsh"
-
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-fi
-
-export ZSH_WAKATIME_BIN=$(brew --prefix)/bin/wakatime
-
-if ! zgen saved; then
-  zgen oh-my-zsh
-
-  zgen oh-my-zsh plugins/alias-finder
-  zgen oh-my-zsh plugins/copyfile
-  zgen oh-my-zsh plugins/dircycle
-  zgen oh-my-zsh plugins/extract
-  zgen oh-my-zsh plugins/git
-  zgen oh-my-zsh plugins/git-extras
-  zgen oh-my-zsh plugins/npm
-  # zgen oh-my-zsh plugins/npx
-  zgen oh-my-zsh plugins/thefuck
-  zgen oh-my-zsh plugins/vscode
-  zgen oh-my-zsh plugins/yarn
-  zgen oh-my-zsh plugins/z
-
-  zgen load supercrabtree/k
-  zgen load sobolevn/wakatime-zsh-plugin
-  zgen load djui/alias-tips
-  zgen load peterhurford/git-it-on.zsh
-  zgen load unixorn/autoupdate-zgen
-
-  zgen load zsh-users/zsh-completions
-  zgen load zsh-users/zsh-autosuggestions
-  zgen load zsh-users/zsh-syntax-highlighting
-  zgen load zsh-users/zsh-history-substring-search
-  zgen load zsh-users/zsh-apple-touchbar
-  zgen load chrisands/zsh-yarn-completions
-
-  # Theme
-  # zgen load denysdovhan/spaceship-prompt spaceship
-  zgen save
-fi
-
-setopt AUTO_CD
-setopt HIST_REDUCE_BLANKS
-setopt HIST_FIND_NO_DUPS
-setopt HIST_IGNORE_DUPS
-setopt HIST_EXPIRE_DUPS_FIRST 
-
-autoload -U add-zsh-hook
-
-# Add a fast prompt
-eval "$(starship init zsh)"
-
-# Autorun `nvm use` when switching into a directory
-# https://github.com/Schniz/fnm/issues/144#issuecomment-674565928
-
-function find-up() {
-	path=$(pwd)
-	while [[ "$path" != "" && ! -e "$path/$1" ]]; do
-		path=${path%/*}
-	done
-	echo "$path"
-}
-
-function _fnm_autoload_hook() {
-	nvmrc_path=$(find-up .nvmrc | tr -d '[:space:]')
-
-	if [ -n "$nvmrc_path" ]; then
-		FNM_USING_LOCAL_VERSION=1
-		nvm_version=$(cat $nvmrc_path/.nvmrc)
-		fnm use $nvm_version
-	elif [ $FNM_USING_LOCAL_VERSION -eq 1 ]; then
-		FNM_USING_LOCAL_VERSION=0
-		fnm use default
-	fi
-}
-
-FNM_USING_LOCAL_VERSION=0
-
-add-zsh-hook chpwd _fnm_autoload_hook
-
-# Integrate with iterm2
-source "${DOT_PATH}/iterm2/.iterm2_shell_integration.zsh"
-function iterm2_print_user_vars() {
-  iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
-}
-
-# Use ~~ as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER='~~'
-
-# Options to fzf command
-export FZF_COMPLETION_OPTS='+c -x'
-
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+source "${DOT_PATH}/zsh/aliases.zsh"
+source "${DOT_PATH}/zsh/brew.zsh"
+source "${DOT_PATH}/zsh/fzf.zsh" # Add fzf config
+source "${DOT_PATH}/zsh/git.zsh"
+source "${DOT_PATH}/zsh/starship.zsh" # Configure prompt
+source "${DOT_PATH}/zsh/utils.zsh"
+source "${DOT_PATH}/zsh/wezterm.zsh"
 
 
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
-
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
-}
+# Add different programming env paths and tool bins
+source "${DOT_PATH}/zsh/bun.zsh"
+source "${DOT_PATH}/zsh/dotnet.zsh"
+source "${DOT_PATH}/zsh/fnm.zsh" # Configure the fast node manager
+source "${DOT_PATH}/zsh/go.zsh"
+source "${DOT_PATH}/zsh/node.zsh"
+source "${DOT_PATH}/zsh/rust.zsh"
+source "${DOT_PATH}/zsh/yarn.zsh"
 
 
-function reload() { 
-  exec zsh
-}
+source "${DOT_PATH}/zsh/color_cat.zsh" # Add colors to cat
+source "${DOT_PATH}/zsh/color_man_pages.zsh" # Add colors to man page
 
-function brewup() {
-  brew update && brew upgrade && brew upgrade --cask && brew doctor && brew clean
-}
-
-function update_shell() {
-  omz update
-  zgen update
-}
-
-# eval "$(hub alias -s)" # use the github `hub` wrapper around git
-
-# fnm / an nvm replacement
-eval "$(fnm env)"
-alias nvm="fnm"; # accommodate muscle memory
+source "${DOT_PATH}/zsh/nvim.zsh"
 
 eval $(thefuck --alias)
 
-# tabtab source for yarn package uninstall by removing these lines or running `tabtab uninstall yarn`
-if [[ -f $HOME/.config/yarn/global/node_modules/tabtab/.completions/yarn.zsh ]]; then
-  source $HOME/.config/yarn/global/node_modules/tabtab/.completions/yarn.zsh
-fi
-
-alias spj="npx sort-package-json"
-
-alias projects="cd ${HOME}/projects"
-alias p="projects"
-alias cobbler="cd ${COBBLER_PATH}"
-alias cob="cobbler"
-alias co="cobbler"
-alias co2="cd ${COBBLER2_PATH}"
-alias dotfiles="cd ${HOME}/projects/dotfiles"
-alias zshconfig="code ~/.zshrc"
-alias ohmyzsh="code ~/.oh-my-zsh"
-alias github="hub"
-alias gco="git checkout"
-
-if [ -n "$PATH" ]; then
-  old_PATH=$PATH:; PATH=
-  while [ -n "$old_PATH" ]; do
-    x=${old_PATH%%:*}       # the first remaining entry
-    case $PATH: in
-      *:"$x":*) ;;          # already there
-      *) PATH=$PATH:$x;;    # not there yet
-    esac
-    old_PATH=${old_PATH#*:}
-  done
-  PATH=${PATH#:}
-  unset old_PATH x
-fi 
-
+# Configure colors for the 'ls' command output. This makes different types of files and directories 
+# appear in different colors, improving readability and file type distinction. The format is 'TYPE=COLOR':
+#   di=34   : Directories are blue.
+#   ln=35   : Symbolic links are magenta.
+#   so=32   : Sockets are green.
+#   pi=33   : Named pipes (FIFO) are yellow.
+#   ex=31   : Executable files are red.
+#   bd=34;46: Block devices (e.g., disk partitions) are blue with a cyan background.
+#   cd=34;43: Character devices are blue with a yellow background.
+#   su=30;41: Files with setuid are black with a red background.
+#   sg=30;46: Files with setgid are black with a cyan background.
+#   tw=30;42: Directories writable to others, with sticky bit, are black with a green background.
+#   ow=30;43: Directories writable to others, without sticky bit, are black with a yellow background.
+# The color codes (like 34, 35, etc.) are ANSI color codes. 'di', 'ln', etc., are file type indicators.
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
-# Do not send MS telemetry with dotnet
-export DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-_fnm_autoload_hook
-
-autoload bashcompinit
-bashcompinit
-
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
-  autoload -Uz compinit
-  compinit
-fi
-
-if [ -d /Applications/WezTerm.app/Contents/MacOS ]; then
-  PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
-  export PATH
-fi
-
-# function imgls() {
-#   "${DOT_PATH}/iterm2/imgls.sh" $@
-# }
-
-# function imgcat() {
-#   "${DOT_PATH}/iterm2/imgcat.sh" $@
-# }
-
-source_if_exists "${HOME}/.cargo/env"
-source_if_exists  "${DOT_PATH}/git-cleanup.zsh"
 source_if_exists "${DOT_PATH}/cobbler-commands.zsh"
-
-export PATH="/usr/local/sbin:$PATH"
 
 # Used to profile things
 # zmodload zsh/zprof
-
-source "${DOT_PATH}/nvim.zsh"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/shawn/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/shawn/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/shawn/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/shawn/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -287,15 +89,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-# bun completions
-[ -s "/Users/shawn/.bun/_bun" ] && source "/Users/shawn/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-source_if_exists "${HOME}/.fzf.sh"
+# De-duplicate PATH elements
+source "${DOT_PATH}/lib/dedupe_path.sh"
 
 echo "Loaded in ${SECONDS} seconds"

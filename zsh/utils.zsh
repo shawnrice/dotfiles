@@ -1,0 +1,3 @@
+function reload() {
+  exec zsh
+}

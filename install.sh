@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# This needs to be reworked. But the idea is that I can do a minimal install and read this from
+# github
+
+IS_MACOS=$(uname -a | grep Darwin)  # This was done by copilot... check this
+IS_LINUX=$(uname -a | grep Linux)   # This was done by copilot... check this
+IS_WSL=$(uname -a | grep Microsoft) # This was done by copilot... check this
+
+function source_if_exists() {
+  if [ -f "$1" ]; then
+    source "$1"
+  fi
+}
+
+echo "Install script is broken..."
+echo "Please rewrite it before using it again"
+echo ""
+
+return 1
+
 source functions.sh
 source aliases.sh
 source path.sh
@@ -108,4 +127,4 @@ use_zsh
 # Install a terminal
 # Install WezTerm
 # Link wezterm config
-ln -s
+# ln -s
