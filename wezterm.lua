@@ -321,9 +321,14 @@ config.color_scheme = "Mikado (terminal.sexy)"
 -- config.color_scheme = "Hardcore"
 -- config.color_scheme = 'Codeschool (dark) (terminal.sexy)'
 
+config.colors = {
+  visual_bell = '#202020',
+}
+
 --
 -- Miscellaneous
 --
+
 
 local misc = {
   adjust_window_size_when_changing_font_size = false,
@@ -346,6 +351,14 @@ local misc = {
   window_background_opacity = 1.0,
   -- window_background_opacity = 0.78,
   -- window_background_opacity = 0.20,
+
+  audible_bell = "Disabled",
+  visual_bell = {
+    fade_out_function = 'EaseOut',
+    fade_in_duration_ms = 75,
+    fade_out_duration_ms = 150,
+    target = "CursorColor",
+  },
 }
 
 for k, v in pairs(misc) do

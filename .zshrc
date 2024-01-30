@@ -2,6 +2,9 @@
 
 typeset -F 3 SECONDS=0
 
+# Make the terminal not beep
+setopt no_beep
+
 function get_dots() {
   # SOURCE="${(%):-%N}"
   SOURCE=${BASH_SOURCE[0]:-${(%):-%x}}
@@ -18,6 +21,12 @@ function get_dots() {
 
 DOTS="$(get_dots)"
 unset get_dots
+
+source "${DOTS}/lib/detect_os.sh" # Detect the OS
+
+$IS_MACOS && echo "MacOS"
+$IS_LINUX && echo "Linux"
+$IS_WSL && echo "WSL"
 
 # Add a couple of things to the path
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
@@ -84,3 +93,4 @@ source_if_exists "${DOTS}/zsh/work/commands.zsh"
 source "${DOTS}/lib/dedupe_path.sh"
 
 echo "Loaded in ${SECONDS} seconds"
+unset SECONDS

@@ -1,8 +1,64 @@
 # Wait 10 milliseconds for starship to check files under the current directory.
 scan_timeout = 10
 
-# A minimal left prompt
-# format = """$character"""
+format = """
+[╭](bold red) $directory$rust$git_branch$git_status$package$golang$terraform$python$docker_context$nodejs
+[╰](bold green) 
+"""
 
-# move the rest of the prompt to the right
-# right_format = """$all"""
+[username]
+style_user = "green bold"
+style_root = "red bold"
+format = "[$user]($style) "
+disabled = false
+show_always = true
+
+# configure directory
+[directory]
+read_only = " "
+truncation_length = 10
+truncate_to_repo = true # truncates directory to root folder if in github repo
+style = "bold italic blue"
+
+[cmd_duration]
+min_time = 4
+show_milliseconds = false
+disabled = false
+style = "bold italic red"
+
+[conda]
+symbol = " "
+
+[docker_context]
+symbol = " "
+format = "via [$symbol$context]($style) "
+style = "blue bold"
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+detect_folders = []
+disabled = false
+
+[git_branch]
+symbol = " "
+
+[golang]
+symbol = ""
+
+[python]
+symbol = " "
+#pyenv_version_name = true
+format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
+style = "bold yellow"
+pyenv_prefix = "venv "
+python_binary = ["./venv/bin/python", "python", "python3", "python2"]
+detect_extensions = ["py"]
+version_format = "v${raw}"
+
+[rust]
+symbol = " "
+
+[nodejs]
+symbol = ""
+format = "via [ Node.js $version](bold green) "
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
