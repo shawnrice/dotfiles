@@ -3,3 +3,4 @@
 source "${DOTS}/lib/command_exists.sh"
 source "${DOTS}/lib/source_if_exists.sh"
 source "${DOTS}/lib/find_up.sh"
+source "${DOTS}/lib/trim.zsh"

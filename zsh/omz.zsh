@@ -1,73 +1,59 @@
-# Path to your oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME=""
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 
-# Uncomment the following line to change how often to auto-update (in days).
-export UPDATE_ZSH_DAYS=6
+if [ ! -d $ZINIT_HOME/.git ]; then
+  echo "Installing zinit"
+  git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+builtin source "${ZINIT_HOME}/zinit.zsh"
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+function update_shell() {
+  # Update Zinit itself
+  zinit self-update
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+  # Update Zinit plugins
+  zinit update --parallel
+}
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+function maybe_update_zinit() {
+  local update_file="$HOME/.last_zinit_update"
+  local current_time=$(date +%s)
+  local last_update=0
+  local update_interval=$((24 * 60 * 60)) # daily
 
-ZSH_ALIAS_FINDER_AUTOMATIC=true
+  [[ -f "$update_file" ]] && read last_update <"$update_file"
 
-# Source zgen first
-source "${HOME}/.zgen/zgen.zsh"
+  if ((current_time - last_update > update_interval)); then
+    update_shell
+    echo "$current_time" >"$update_file"
+  fi
+}
+
+maybe_update_zinit
+unset maybe_update_zinit
 
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  FPATH=$BREW_PREFIX/share/zsh/site-functions:$FPATH
+  export ZSH_WAKATIME_BIN=$BREW_PREFIX/bin/wakatime
 fi
 
-export ZSH_WAKATIME_BIN=$(brew --prefix)/bin/wakatime
+# zinit oh-my-zsh plugins/thefuck
+# zinit oh-my-zsh plugins/z
 
-if ! zgen saved; then
-  zgen oh-my-zsh
+# zinit load supercrabtree/k
+zinit light sobolevn/wakatime-zsh-plugin
 
-  zgen oh-my-zsh plugins/alias-finder
-  zgen oh-my-zsh plugins/copyfile
-  zgen oh-my-zsh plugins/dircycle
-  zgen oh-my-zsh plugins/extract
-  zgen oh-my-zsh plugins/git
-  zgen oh-my-zsh plugins/git-extras
-  zgen oh-my-zsh plugins/npm
-  # zgen oh-my-zsh plugins/npx
-  zgen oh-my-zsh plugins/thefuck
-  zgen oh-my-zsh plugins/vscode
-  zgen oh-my-zsh plugins/yarn
-  zgen oh-my-zsh plugins/z
+# Look here, update and prune
+# https://github.com/peterhurford/git-it-on.zsh/blob/master/git-it-on.plugin.zsh
 
-  zgen load supercrabtree/k
-  zgen load sobolevn/wakatime-zsh-plugin
-  zgen load djui/alias-tips
-  zgen load peterhurford/git-it-on.zsh
-  zgen load unixorn/autoupdate-zgen
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+# zinit light zsh-users/zsh-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-history-substring-search
 
-  zgen load zsh-users/zsh-completions
-  zgen load zsh-users/zsh-autosuggestions
-  zgen load zsh-users/zsh-syntax-highlighting
-  zgen load zsh-users/zsh-history-substring-search
-  zgen load zsh-users/zsh-apple-touchbar
-  zgen load chrisands/zsh-yarn-completions
-
-  # Theme
-  # zgen load denysdovhan/spaceship-prompt spaceship
-  zgen save
-fi
+zinit light chrisands/zsh-yarn-completions
 
 setopt AUTO_CD
 setopt HIST_REDUCE_BLANKS

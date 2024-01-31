@@ -1,64 +1,97 @@
 # Wait 10 milliseconds for starship to check files under the current directory.
 scan_timeout = 10
 
-format = """
-[╭](bold red) $directory$rust$git_branch$git_status$package$golang$terraform$python$docker_context$nodejs
-[╰](bold green) 
-"""
+# Disable the default prompt order and define a custom one
+# prompt_order = ["username", "hostname", "directory", "git_branch", "git_state", "git_status", "line_break", "character"]
 
-[username]
-style_user = "green bold"
-style_root = "red bold"
-format = "[$user]($style) "
-disabled = false
-show_always = true
+# Use custom format
+# format = '''
+# [┌───────────────────>](bold green)
+# [│](bold green)$directory$rust$package
+# [└─>](bold green) '''
 
-# configure directory
+
+# Show the current directory
 [directory]
-read_only = " "
-truncation_length = 10
-truncate_to_repo = true # truncates directory to root folder if in github repo
-style = "bold italic blue"
+truncation_length = 3
+truncate_to_repo = true
 
-[cmd_duration]
-min_time = 4
-show_milliseconds = false
-disabled = false
-style = "bold italic red"
-
-[conda]
-symbol = " "
-
-[docker_context]
-symbol = " "
-format = "via [$symbol$context]($style) "
-style = "blue bold"
-only_with_files = true
-detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
-detect_folders = []
-disabled = false
-
+# Show the current Git branch
 [git_branch]
-symbol = " "
+format = "on [$symbol$branch]($style) "
 
-[golang]
-symbol = ""
+# Git status (like uncommitted, untracked changes)
+[git_status]
+format = "([$all_status]($style)) "
 
-[python]
-symbol = " "
-#pyenv_version_name = true
-format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
-style = "bold yellow"
-pyenv_prefix = "venv "
-python_binary = ["./venv/bin/python", "python", "python3", "python2"]
-detect_extensions = ["py"]
-version_format = "v${raw}"
+# Show the username only if it's not the default user
+[username]
+show_always = false
+format = "[$user]($style) "
 
-[rust]
-symbol = " "
+# Show the hostname only when SSHing into the machine
+[hostname]
+ssh_only = true
+format = "[$hostname]($style) "
 
-[nodejs]
-symbol = ""
-format = "via [ Node.js $version](bold green) "
-detect_files = ["package.json", ".node-version"]
-detect_folders = ["node_modules"]
+# format = """
+# [╭](bold red) $directory$rust$git_branch$git_status$package$golang$terraform$python$docker_context$nodejs
+# [╰](bold green) 
+# """
+
+# [username]
+# style_user = "green bold"
+# style_root = "red bold"
+# format = "[$user]($style) "
+# disabled = false
+# show_always = true
+
+# # configure directory
+# [directory]
+# read_only = " "
+# truncation_length = 10
+# truncate_to_repo = true # truncates directory to root folder if in github repo
+# style = "bold italic blue"
+
+# [cmd_duration]
+# min_time = 4
+# show_milliseconds = false
+# disabled = false
+# style = "bold italic red"
+
+# [conda]
+# symbol = " "
+
+# [docker_context]
+# symbol = " "
+# format = "via [$symbol$context]($style) "
+# style = "blue bold"
+# only_with_files = true
+# detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+# detect_folders = []
+# disabled = false
+
+# [git_branch]
+# symbol = " "
+
+# [golang]
+# symbol = ""
+
+# [python]
+# symbol = " "
+# #pyenv_version_name = true
+# format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
+# style = "bold yellow"
+# pyenv_prefix = "venv "
+# python_binary = ["./venv/bin/python", "python", "python3", "python2"]
+# detect_extensions = ["py"]
+# version_format = "v${raw}"
+
+# [rust]
+# symbol = " "
+
+# [nodejs]
+# symbol = ""
+# format = "via [ Node.js $version](bold green) "
+# detect_files = ["package.json", ".node-version"]
+# detect_folders = ["node_modules"]

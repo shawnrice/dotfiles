@@ -1,3 +1,3 @@
 function source_if_exists() {
-  [[ -s "$1" ]] && source "$1"
+  [[ -s "$1" ]] && builtin source "$1"
 }

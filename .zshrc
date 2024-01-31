@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+# # CodeWhisperer pre block. Keep at the top of this file.
+# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
+
+zmodload zsh/zprof
+
 typeset -F 3 SECONDS=0
 
 # Make the terminal not beep
@@ -19,10 +24,20 @@ function get_dots() {
   echo $DIR
 }
 
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
 DOTS="$(get_dots)"
 unset get_dots
 
-source "${DOTS}/lib/detect_os.sh" # Detect the OS
+builtin source "${DOTS}/lib/detect_os.sh" # Detect the OS
 
 $IS_MACOS && echo "MacOS"
 $IS_LINUX && echo "Linux"
@@ -33,38 +48,60 @@ export PATH="$HOME/bin:/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 PATH="${PATH}:${DOTS}/bin" # Add the dotfiles bin to the path
 
-source "${DOTS}/lib/lib.sh" # Helpers needed further down
+builtin source "${DOTS}/lib/lib.sh" # Helpers needed further down
+
+if command_exists brew; then
+  BREW_PREFIX=$(brew --prefix)
+fi
 
 # Load Oh-My-Zsh first
-source "${DOTS}/zsh/omz.zsh"
+builtin source "${DOTS}/zsh/omz.zsh"
 
-source "${DOTS}/zsh/cmp.zsh" # Add more completion
+builtin source "${DOTS}/zsh/cmp.zsh" # Add more completion
 
-source "${DOTS}/zsh/aliases.zsh"
-source "${DOTS}/zsh/brew.zsh"
-source "${DOTS}/zsh/fzf.zsh" # Add fzf config
-source "${DOTS}/zsh/git.zsh"
-source "${DOTS}/zsh/starship.zsh" # Configure prompt
-source "${DOTS}/zsh/utils.zsh"
-source "${DOTS}/zsh/wezterm.zsh"
+builtin source "${DOTS}/zsh/aliases.zsh"
+builtin source "${DOTS}/zsh/brew.zsh"
+builtin source "${DOTS}/zsh/fzf.zsh" # Add fzf config
+builtin source "${DOTS}/zsh/git.zsh"
+builtin source "${DOTS}/zsh/starship.zsh" # Configure prompt
+builtin source "${DOTS}/zsh/utils.zsh"
+builtin source "${DOTS}/zsh/wezterm.zsh"
 
 
 # Add different programming env paths and tool bins
-source "${DOTS}/zsh/bun.zsh"
-source "${DOTS}/zsh/dotnet.zsh"
-source "${DOTS}/zsh/fnm.zsh" # Configure the fast node manager
-source "${DOTS}/zsh/go.zsh"
-source "${DOTS}/zsh/node.zsh"
-source "${DOTS}/zsh/rust.zsh"
-source "${DOTS}/zsh/yarn.zsh"
+builtin source "${DOTS}/zsh/bun.zsh"
+builtin source "${DOTS}/zsh/dotnet.zsh"
+builtin source "${DOTS}/zsh/fnm.zsh" # Configure the fast node manager
+builtin source "${DOTS}/zsh/go.zsh"
+builtin source "${DOTS}/zsh/node.zsh"
+builtin source "${DOTS}/zsh/rust.zsh"
+builtin source "${DOTS}/zsh/yarn.zsh"
 
 
-source "${DOTS}/zsh/color_cat.zsh" # Add colors to cat
-source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
+builtin source "${DOTS}/zsh/color_cat.zsh" # Add colors to cat
+builtin source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
 
-source "${DOTS}/zsh/nvim.zsh"
+builtin source "${DOTS}/zsh/nvim.zsh"
 
 eval $(thefuck --alias)
+
+# LISTMAX=0
+# unsetopt LIST_AMBIGUOUS MENU_COMPLETE COMPLETE_IN_WORD
+# setopt AUTO_MENU AUTO_LIST LIST_PACKED
+# unambigandmenu() {
+#   echo -n "\e[31m...\e[0m"
+#   # avoid opening the list on the first expand
+#   unsetopt AUTO_LIST
+#   zle expand-or-complete
+#   setopt AUTO_LIST
+#   zle magic-space
+#   zle backward-delete-char
+#   zle expand-or-complete
+#   zle redisplay
+# }
+# zle -N unambigandmenu
+# bindkey "^i" unambigandmenu
+
 
 # Configure colors for the 'ls' command output. This makes different types of files and directories 
 # appear in different colors, improving readability and file type distinction. The format is 'TYPE=COLOR':
@@ -94,3 +131,6 @@ source "${DOTS}/lib/dedupe_path.sh"
 
 echo "Loaded in ${SECONDS} seconds"
 unset SECONDS
+
+# CodeWhisperer post block. Keep at the bottom of this file.
+# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
