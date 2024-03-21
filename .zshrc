@@ -7,6 +7,7 @@ zmodload zsh/zprof
 
 typeset -F 3 SECONDS=0
 
+
 # Make the terminal not beep
 setopt no_beep
 
@@ -37,11 +38,11 @@ function get_dots() {
 DOTS="$(get_dots)"
 unset get_dots
 
-builtin source "${DOTS}/lib/detect_os.sh" # Detect the OS
+# Load the zim framework
+builtin source "${DOTS}/zsh/zim.zsh"
 
-$IS_MACOS && echo "MacOS"
-$IS_LINUX && echo "Linux"
-$IS_WSL && echo "WSL"
+# Sets approprate environment variables for the OS
+builtin source "${DOTS}/lib/detect_os.sh" # Detect the OS
 
 # Add a couple of things to the path
 export PATH="$HOME/bin:/usr/local/bin:$PATH"
@@ -55,7 +56,7 @@ if command_exists brew; then
 fi
 
 # Load Oh-My-Zsh first
-builtin source "${DOTS}/zsh/omz.zsh"
+# builtin source "${DOTS}/zsh/omz.zsh"
 
 builtin source "${DOTS}/zsh/cmp.zsh" # Add more completion
 
@@ -84,6 +85,7 @@ builtin source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
 builtin source "${DOTS}/zsh/nvim.zsh"
 
 eval $(thefuck --alias)
+eval "$(zoxide init zsh)"
 
 # LISTMAX=0
 # unsetopt LIST_AMBIGUOUS MENU_COMPLETE COMPLETE_IN_WORD
@@ -134,3 +136,7 @@ unset SECONDS
 
 # CodeWhisperer post block. Keep at the bottom of this file.
 # [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
+
+
+# bun completions
+[ -s "/Users/shawn/.bun/_bun" ] && source "/Users/shawn/.bun/_bun"
