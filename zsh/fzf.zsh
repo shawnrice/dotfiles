@@ -19,4 +19,4 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-source_if_exists "${HOME}/.fzf.sh"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

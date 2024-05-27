@@ -1,8 +1,3 @@
-#!/usr/bin/env zsh
-
-# # CodeWhisperer pre block. Keep at the top of this file.
-# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
-
 zmodload zsh/zprof
 
 typeset -F 3 SECONDS=0
@@ -128,15 +123,12 @@ source_if_exists "${DOTS}/zsh/work/commands.zsh"
 # Used to profile things
 # zmodload zsh/zprof
 
+# bun completions
+[ -s "/Users/shawn/.bun/_bun" ] && source "/Users/shawn/.bun/_bun"
+
 # De-duplicate PATH elements
 source "${DOTS}/lib/dedupe_path.sh"
 
 echo "Loaded in ${SECONDS} seconds"
 unset SECONDS
 
-# CodeWhisperer post block. Keep at the bottom of this file.
-# [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
-
-
-# bun completions
-[ -s "/Users/shawn/.bun/_bun" ] && source "/Users/shawn/.bun/_bun"

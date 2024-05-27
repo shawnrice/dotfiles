@@ -322,21 +322,20 @@ config.color_scheme = "Mikado (terminal.sexy)"
 -- config.color_scheme = 'Codeschool (dark) (terminal.sexy)'
 
 config.colors = {
-  visual_bell = '#202020',
+  visual_bell = "#202020",
 }
 
 --
 -- Miscellaneous
 --
 
-
 local misc = {
   adjust_window_size_when_changing_font_size = false,
   check_for_updates = true,
   check_for_updates_interval_seconds = 86400,
   enable_scroll_bar = true,
-  enable_kitty_keyboard = true,       -- @see https://github.com/wez/wezterm/issues/3731
-  enable_csi_u_key_encoding = false,  -- @see https://github.com/wez/wezterm/issues/3731
+  enable_kitty_keyboard = true, -- @see https://github.com/wez/wezterm/issues/3731
+  enable_csi_u_key_encoding = false, -- @see https://github.com/wez/wezterm/issues/3731
   exit_behavior = "CloseOnCleanExit", -- Use 'Hold' to not close
   hide_tab_bar_if_only_one_tab = true,
   initial_cols = 140,
@@ -354,7 +353,7 @@ local misc = {
 
   audible_bell = "Disabled",
   visual_bell = {
-    fade_out_function = 'EaseOut',
+    fade_out_function = "EaseOut",
     fade_in_duration_ms = 75,
     fade_out_duration_ms = 150,
     target = "CursorColor",
@@ -399,30 +398,30 @@ end)
 
 config.keys = {
   -- Disable ctrl - / ctrl = so that we can use them in Vim
-  { key = '-', mods = 'CTRL', action = wezterm.action.Nop },
-  { key = '=', mods = 'CTRL', action = wezterm.action.Nop },
+  { key = "-", mods = "CTRL", action = wezterm.action.Nop },
+  { key = "=", mods = "CTRL", action = wezterm.action.Nop },
 }
 
 -- @see https://github.com/folke/zen-mode.nvim#wezterm
-wezterm.on('user-var-changed', function(window, pane, name, value)
+wezterm.on("user-var-changed", function(window, pane, name, value)
   local overrides = window:get_config_overrides() or {}
   if name == "ZEN_MODE" then
-      local incremental = value:find("+")
-      local number_value = tonumber(value)
-      if incremental ~= nil then
-          while (number_value > 0) do
-              window:perform_action(wezterm.action.IncreaseFontSize, pane)
-              number_value = number_value - 1
-          end
-          overrides.enable_tab_bar = false
-      elseif number_value < 0 then
-          window:perform_action(wezterm.action.ResetFontSize, pane)
-          overrides.font_size = nil
-          overrides.enable_tab_bar = true
-      else
-          overrides.font_size = number_value
-          overrides.enable_tab_bar = false
+    local incremental = value:find("+")
+    local number_value = tonumber(value)
+    if incremental ~= nil then
+      while number_value > 0 do
+        window:perform_action(wezterm.action.IncreaseFontSize, pane)
+        number_value = number_value - 1
       end
+      overrides.enable_tab_bar = false
+    elseif number_value < 0 then
+      window:perform_action(wezterm.action.ResetFontSize, pane)
+      overrides.font_size = nil
+      overrides.enable_tab_bar = true
+    else
+      overrides.font_size = number_value
+      overrides.enable_tab_bar = false
+    end
   end
   window:set_config_overrides(overrides)
 end)

@@ -1,5 +1,5 @@
 # Default nvim profile
-DEFAULT_NVIM_PROFILE="nvim/gamma"
+DEFAULT_NVIM_PROFILE="nvim/delta"
 
 # Install Bob
 function setup_nvim() {
@@ -36,7 +36,8 @@ function nvims() {
 }
 # https://thevaluable.dev/zsh-line-editor-configuration-mouseless/
 
-bindkey -s ^n "nvims\n"
+# bindkey -s ^n "nvims\n"
+bindkey '^n' "nvims\n"
 
 # Skip forward/back a word with opt-arrow
 bindkey '[C' forward-word
