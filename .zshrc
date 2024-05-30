@@ -40,8 +40,8 @@ builtin source "${DOTS}/zsh/zim.zsh"
 builtin source "${DOTS}/lib/detect_os.sh" # Detect the OS
 
 # Add a couple of things to the path
-export PATH="$HOME/bin:/usr/local/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
+export PATH="$PATH:/usr/local/bin"
+export PATH="$PATH:/usr/local/sbin"
 PATH="${PATH}:${DOTS}/bin" # Add the dotfiles bin to the path
 
 builtin source "${DOTS}/lib/lib.sh" # Helpers needed further down
