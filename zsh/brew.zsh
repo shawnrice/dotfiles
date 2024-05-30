@@ -1,5 +1,5 @@
 if ! command_exists brew; then
-  echo "[WARN]: brew is not installed. Skipping brew configuration."
+  # echo "[WARN]: brew is not installed. Skipping brew configuration."
   return 0
 fi
 

@@ -1,5 +1,5 @@
 if ! command_exists go; then
-  echo "[WARN]: go is not installed. Skipping go configuration."
+  # echo "[WARN]: go is not installed. Skipping go configuration."
   return 0
 fi
 

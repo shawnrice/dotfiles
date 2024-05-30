@@ -1,5 +1,5 @@
 if ! command_exists dotnet; then
-  echo "[WARN]: dotnet is not installed. Skipping dotnet configuration."
+  # echo "[WARN]: dotnet is not installed. Skipping dotnet configuration."
   return 0
 fi
 
