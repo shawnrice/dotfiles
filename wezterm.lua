@@ -14,13 +14,10 @@ wezterm.on("gui-startup", function()
   window:gui_window():maximize()
 end)
 
--- Use the config_builder which will help provide clearer error messages
-local config = wezterm.config_builder()
-
 --- Config struct documentation
 -- https://wezfurlong.org/wezterm/config/lua/config/index.html
 -- This table will hold the configuration.
-
+-- Use the config_builder which will help provide clearer error messages
 local config = wezterm.config_builder()
 
 -- Remove extra space.
@@ -35,6 +32,12 @@ config.inactive_pane_hsb = {
 }
 
 -- Support for undercurl, etc.
+-- To make this available, you must run the following command:
+-- tempfile=$(mktemp) \
+--   && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \
+--   && tic -x -o ~/.terminfo $tempfile \
+--   && rm $tempfile
+-- @see https://wezfurlong.org/wezterm/config/lua/config/term.html
 config.term = "wezterm"
 
 local colors = {
