@@ -1,0 +1,73 @@
+# The syntax is "key = value". The whitespace around the equals doesn't matter.
+# Empty values reset the configuration to the default value
+# @see https://ghostty.org/docs/config/reference
+
+
+macos-option-as-alt = true
+macos-window-shadow = false
+mouse-hide-while-typing = true
+quit-after-last-window-closed = true
+
+# Cursor
+
+adjust-underline-position = 6
+adjust-underline-thickness = 40%
+adjust-cursor-thickness = 150%
+cursor-style = block
+
+# Fonts
+
+font-family = Berkeley Mono Variable
+font-family = Jetbrains Mono
+
+font-feature = calt
+font-feature = clig
+font-feature = liga
+font-feature = dlig
+font-feature = ss01
+font-feature = ss02
+font-feature = ss03
+font-feature = ss04
+font-feature = ss05
+font-feature = ss06
+font-feature = ss07
+font-feature = ss08
+font-feature = ssty
+font-feature = zero
+
+# Theme
+
+# theme = nightfox
+theme = dark:Gruvbox Dark Hard,light:Gruvbox Light Hard
+
+# Keybinds
+
+keybind = super+d=new_split:right
+keybind = super+t=new_tab
+keybind = super+w=close_surface
+keybind = super+[=previous_tab
+keybind = super+]=next_tab
+keybind = global:super+ctrl+alt+shift+enter=toggle_quick_terminal
+
+keybind = alt+shift+i=inspector:toggle
+keybind = alt+equal=increase_font_size:1
+keybind = alt+minus=decrease_font_size:1
+keybind = alt+zero=reset_font_size
+keybind = alt+shift+v=new_split:right
+keybind = alt+shift+s=new_split:down
+keybind = alt+shift+k=goto_split:top
+keybind = alt+shift+j=goto_split:bottom
+keybind = alt+shift+h=goto_split:left
+keybind = alt+shift+l=goto_split:right
+
+
+
+# Misc
+
+confirm-close-surface = true
+mouse-hide-while-typing = true
+shell-integration = detect
+
+quick-terminal-position = center
+
+# vim: set ft=conf

@@ -1,97 +1,259 @@
-# Wait 10 milliseconds for starship to check files under the current directory.
-scan_timeout = 10
+"$schema" = 'https://starship.rs/config-schema.json'
 
-# Disable the default prompt order and define a custom one
-# prompt_order = ["username", "hostname", "directory", "git_branch", "git_state", "git_status", "line_break", "character"]
+format = """
+$directory\
+$git_branch\
+$git_status\
+$git_metrics\
+$status\n\
+${env_var.ENV_INDICATOR}\
+$character"""
 
-# Use custom format
-# format = '''
-# [┌───────────────────>](bold green)
-# [│](bold green)$directory$rust$package
-# [└─>](bold green) '''
+right_format = """$cmd_duration"""
 
 
-# Show the current directory
+# Color palette based on Mikado theme
+# Background: #000000, Foreground: #ffffff
+# Black: #322a2c, Bright Black: #666666
+# Red: #a04363, Green: #9b9329
+# Yellow: #bf7a29, Blue: #6a8c8c
+# Magenta: #856774, Cyan: #757978
+# White: #bcbcaf, Bright White: #ffffff
+
+[env_var.ENV_INDICATOR]
+variable = "ENV_INDICATOR"
+format = "[$env_value](bold #929d6f) "
+
 [directory]
-truncation_length = 3
+style = "bold #6a8c8c"  # Blue
+read_only = " 󰌾"
 truncate_to_repo = true
+truncation_length = 3
 
-# Show the current Git branch
 [git_branch]
-format = "on [$symbol$branch]($style) "
+format = "[$symbol$branch]($style) "
+style = "#666666"                    # Bright Black
+# symbol = " " # Nerd Font symbol for git branch
+symbol = " "
 
-# Git status (like uncommitted, untracked changes)
 [git_status]
-format = "([$all_status]($style)) "
+format = '([$all_status$ahead_behind]($style) )'
+style = "#c26f53"                                # Red
 
-# Show the username only if it's not the default user
-[username]
-show_always = false
-format = "[$user]($style) "
+# Minimal branch operations
+ahead = " "         # Simple up arrow
+# ahead = "󱞿 "
+behind = " "        # Simple down arrow
+# behind = " "
+diverged = " "      # Bidirectional arrow
+# diverged = "󰹺 "
+# stashed = "≡ "       # Stacked lines for stashed changes
+stashed = ""       # Stacked lines for stashed changes
+# stashed = " "
 
-# Show the hostname only when SSHing into the machine
+# File status
+modified = "󰜥 "      # Tilde for modified files
+# modified = " "
+untracked = " "     # Question mark for unknown files
+# untracked = " "
+
+deleted = " "       # Minus for deleted files
+# deleted = "󰧧 "
+renamed = " "       # Arrow for renamed files
+# renamed = ""
+staged = " "        # Plus for staged changes
+# staged = "󰐕 "
+
+# Other states
+conflicted = "! "    # Exclamation for conflicts
+# conflicted = " "
+up_to_date = "✓ "    # Checkmark for clean repo
+# up_to_date = " "
+
+[git_metrics]
+format = '([+$added]($added_style) )([-$deleted]($deleted_style) )'
+# added_style = "#9b9329" # Green
+added_style = "#929d6f" # Green
+
+# deleted_style = "#a04363" # Red
+deleted_style = "#c26f53" # Red
+
+disabled = false
+only_nonzero_diffs = true
+
+[cmd_duration]
+format = "[took $duration]($style) "
+style = "#666666"                    # Bright Black
+min_time = 500
+# style = "#bf7a29" # Yellow
+
+[status]
+disabled = false
+format = "[$symbol$status]($style) "
+style = "#c26f53"                    # Red
+symbol = "✗"
+
+[character]
+success_symbol = "[❯](bold #929d6f)" # Green
+error_symbol = "[❯](bold #c26f53)"   # Red
+
+# Probably unused
+
+[aws]
+symbol = "  "
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+
+[conda]
+symbol = " "
+
+[crystal]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[fennel]
+symbol = " "
+
+[fossil_branch]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[guix_shell]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[haxe]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
 [hostname]
-ssh_only = true
-format = "[$hostname]($style) "
+ssh_symbol = " "
 
-# format = """
-# [╭](bold red) $directory$rust$git_branch$git_status$package$golang$terraform$python$docker_context$nodejs
-# [╰](bold green) 
-# """
+[java]
+symbol = " "
 
-# [username]
-# style_user = "green bold"
-# style_root = "red bold"
-# format = "[$user]($style) "
-# disabled = false
-# show_always = true
+[julia]
+symbol = " "
 
-# # configure directory
-# [directory]
-# read_only = " "
-# truncation_length = 10
-# truncate_to_repo = true # truncates directory to root folder if in github repo
-# style = "bold italic blue"
+[kotlin]
+symbol = " "
 
-# [cmd_duration]
-# min_time = 4
-# show_milliseconds = false
-# disabled = false
-# style = "bold italic red"
+[lua]
+symbol = " "
 
-# [conda]
-# symbol = " "
+[memory_usage]
+symbol = "󰍛 "
 
-# [docker_context]
-# symbol = " "
-# format = "via [$symbol$context]($style) "
-# style = "blue bold"
-# only_with_files = true
-# detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
-# detect_folders = []
-# disabled = false
+[meson]
+symbol = "󰔷 "
 
-# [git_branch]
-# symbol = " "
+[nim]
+symbol = "󰆥 "
 
-# [golang]
-# symbol = ""
+[nix_shell]
+symbol = " "
 
-# [python]
-# symbol = " "
-# #pyenv_version_name = true
-# format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
-# style = "bold yellow"
-# pyenv_prefix = "venv "
-# python_binary = ["./venv/bin/python", "python", "python3", "python2"]
-# detect_extensions = ["py"]
-# version_format = "v${raw}"
+[nodejs]
+symbol = " "
 
-# [rust]
-# symbol = " "
+[ocaml]
+symbol = " "
 
-# [nodejs]
-# symbol = ""
-# format = "via [ Node.js $version](bold green) "
-# detect_files = ["package.json", ".node-version"]
-# detect_folders = ["node_modules"]
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+
+[package]
+symbol = "󰏗 "
+
+[perl]
+symbol = " "
+
+[php]
+symbol = " "
+
+[pijul_channel]
+symbol = " "
+
+[python]
+symbol = " "
+
+[rlang]
+symbol = "󰟔 "
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "
+
+[scala]
+symbol = " "
+
+[swift]
+symbol = " "
+
+[zig]
+symbol = " "

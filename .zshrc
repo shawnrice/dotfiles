@@ -20,6 +20,72 @@ function get_dots() {
   echo $DIR
 }
 
+export EDITOR='nvim'
+
+# fuzzy grep open via ag with line number
+ng() {
+  local file
+  local line
+
+  read -r file line <<<"$(ag --nobreak --noheading $@ | fzf -0 -1 | awk -F: '{print $1, $2}')"
+
+  if [[ -n $file ]]
+  then
+     nvim $file +$line
+  fi
+}
+
+# Determines which package manager is used at cwd
+__which_node_pm() {
+  if [[ -f yarn.lock ]]; then
+    echo "yarn"
+  elif [[ -f pnpm-lock.yaml ]]; then
+    echo "pnpm"
+  elif [[ -f bun.lock ]]; then
+    echo "bun"
+  elif [[ -f package-lock.json ]]; then
+    echo "npm"
+  else
+    echo "npm"
+  fi
+}
+
+# run node script (requires jq)
+# Run npm/yarn/pnpm/bun script with frecency sorting (requires jq and fzf)
+fns() {
+  local script pm history_file
+  history_file="$HOME/.cache/fns_history"
+
+  # Create cache directory if it doesn't exist
+  mkdir -p "$(dirname "$history_file")"
+
+  # Create or update the frecency history file
+  if [[ ! -f $history_file ]]; then
+    touch "$history_file"
+  fi
+
+  # Determine the package manager
+  pm=$(__which_node_pm)
+
+  # Extract scripts and sort by frecency
+  script=$(cat package.json | jq -r '.scripts | keys[]' | awk -v hist="$history_file" '
+    BEGIN { while ((getline < hist) > 0) count[$1] += $2 }
+    { print $0, count[$0] + 0 }
+  ' | sort -k2,2nr -k1,1 | cut -d' ' -f1 | fzf) || return
+
+  # Update frecency history
+  if [[ -n $script ]]; then
+    awk -v script="$script" '
+      $1 == script { $2++; found = 1; print; next }
+      { print }
+      END { if (!found) print script, 1 }
+    ' "$history_file" > "${history_file}.tmp" && mv "${history_file}.tmp" "$history_file"
+
+    # Run the selected script
+    $pm run "$script"
+  fi
+}
+
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -79,7 +145,7 @@ builtin source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
 
 builtin source "${DOTS}/zsh/nvim.zsh"
 
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 eval "$(zoxide init zsh)"
 
 # LISTMAX=0
@@ -116,6 +182,21 @@ eval "$(zoxide init zsh)"
 # The color codes (like 34, 35, etc.) are ANSI color codes. 'di', 'ln', etc., are file type indicators.
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
+export LANG="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+export LC_NUMERIC="en_US.UTF-8"
+export LC_TIME="en_US.UTF-8"
+export LC_COLLATE="en_US.UTF-8"
+export LC_MONETARY="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_PAPER="en_US.UTF-8"
+export LC_NAME="en_US.UTF-8"
+export LC_ADDRESS="en_US.UTF-8"
+export LC_TELEPHONE="en_US.UTF-8"
+export LC_MEASUREMENT="en_US.UTF-8"
+export LC_IDENTIFICATION="en_US.UTF-8"
+export LC_ALL=
+
 # Untracked things for the work computer
 source_if_exists "${DOTS}/zsh/work/aliases.zsh"
 source_if_exists "${DOTS}/zsh/work/commands.zsh"
@@ -126,9 +207,41 @@ source_if_exists "${DOTS}/zsh/work/commands.zsh"
 # bun completions
 [ -s "/Users/shawn/.bun/_bun" ] && source "/Users/shawn/.bun/_bun"
 
+export PATH="/opt/homebrew/bin:$PATH"
+
+if [[ -e /Applications/Ghostty.app/Contents/MacOS/ghostty ]]; then
+  alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
+fi
+
 # De-duplicate PATH elements
 source "${DOTS}/lib/dedupe_path.sh"
 
 echo "Loaded in ${SECONDS} seconds"
 unset SECONDS
 
+# See: https://ashby.slab.com/posts/tsc-running-out-of-memory-b1buu1bp
+export NODE_OPTIONS=--max-old-space-size=10000
+
+export ASHBY_ROOT="/Users/shawn/projects/@ashbyhq/Ashby"
+
+# This assumes that the `dotfiles` repository lives next 
+# to the `Ashby` repository
+export ASHBY_RC="/Users/shawn/projects/@ashbyhq/dotfiles/.ashbyrc"
+source_if_exists $ASHBY_RC
+fpath=(/Users/shawn/projects/@ashbyhq/dotfiles//.zsh-completions $fpath)
+
+alias ashby="cd $ASHBY_ROOT"
+alias run_ashby="zellij --layout /Users/shawn/projects/run-ashby.kql"
+
+export CLAUDE_CODE_OAUTH_TOKEN=$(security find-generic-password -s "claude-code" -w)
+
+
+# export AWS_SESSION_TOKEN_TTL=8h
+# source /Users/shawn/.config/op/plugins.sh
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/shawn/.lmstudio/bin"
+# End of LM Studio CLI section
+# export OP_BIOMETRIC_UNLOCK_ENABLED=true
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

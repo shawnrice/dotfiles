@@ -19,6 +19,10 @@ zmodule termtitle
 # Utility aliases and functions. Adds colour to ls, grep and less.
 zmodule utility
 
+# https://github.com/zimfw/prompt-pwd
+zmodule prompt-pwd
+
+
 #
 # Prompt
 #

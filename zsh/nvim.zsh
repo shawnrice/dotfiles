@@ -1,5 +1,7 @@
 # Default nvim profile
-DEFAULT_NVIM_PROFILE="nvim/delta"
+# DEFAULT_NVIM_PROFILE="nvim/delta.nvim"
+# DEFAULT_NVIM_PROFILE="nvim/delta"
+DEFAULT_NVIM_PROFILE="nvim/zeta.nvim"
 
 # Install Bob
 function setup_nvim() {

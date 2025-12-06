@@ -10,8 +10,8 @@ local act = wezterm.action
 
 -- Maximize the window on startup
 wezterm.on("gui-startup", function()
-  local tab, pane, window = mux.spawn_window({})
-  window:gui_window():maximize()
+	local tab, pane, window = mux.spawn_window({})
+	window:gui_window():maximize()
 end)
 
 --- Config struct documentation
@@ -20,6 +20,53 @@ end)
 -- Use the config_builder which will help provide clearer error messages
 local config = wezterm.config_builder()
 
+local DARK_THEME = "GruvboxDarkHard"
+local LIGHT_THEME = "GruvboxLight"
+
+function find_color_scheme()
+	if (wezterm.gui.get_appearance()):find("Dark") then
+		return DARK_THEME
+	else
+		return LIGHT_THEME
+	end
+end
+
+wezterm.on("window-config-reloaded", function(window, _)
+	local overrides = window:get_config_overrides() or {}
+	window:set_config_overrides(find_color_scheme())
+end)
+
+-- This is where you actually apply your config choices
+
+-- For example, changing the color scheme:
+-- config.color_scheme = 'Material (base16)'
+-- config.color_scheme = 'MaterialDarker'
+-- config.color_scheme = 'Material Darker (base16)'
+-- config.color_scheme = "MaterialDesignColors"
+-- config.color_scheme = "Mikado (terminal.sexy)"
+-- config.color_scheme = "Ef-Dream"
+-- config.color_scheme = 'Everforest Dark Hard (Gogh)'
+-- config.color_scheme = 'Everforest Dark Medium (Gogh)'
+-- config.color_scheme = "Everforest Dark (Gogh)"
+-- config.color_scheme = 'Embers (base16)'
+-- config.color_scheme = 'Github Dark (Gogh)'
+-- config.color_scheme = 'Gooey (Gogh)'
+-- config.color_scheme = 'Gogh (Gogh)'
+-- config.color_scheme = 'Gruvbox Dark (Gogh)'
+-- config.color_scheme = 'Gruvbox dark, hard (base16)'
+-- config.color_scheme = 'Gruvbox Material (Gogh)'
+-- config.color_scheme = 'Chalk (base16)'
+-- config.color_scheme = '3024 (dark) (terminal.sexy)'
+-- config.color_scheme = 'Tomorrow Night Bright (Gogh)'
+-- config.color_scheme = 'Tomorrow (dark) (terminal.sexy)'
+
+-- config.color_scheme = "Hardcore"
+-- config.color_scheme = 'Codeschool (dark) (terminal.sexy)'
+-- config.color_scheme = "Twilight (dark) (terminal.sexy)"
+-- config.color_scheme = "tokyonight_night"
+-- config.color_scheme = "nordfox"
+config.color_scheme = find_color_scheme()
+
 -- Remove extra space.
 config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 
@@ -27,8 +74,8 @@ config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
 config.cursor_thickness = "0.1cell"
 
 config.inactive_pane_hsb = {
-  saturation = 0.8,
-  brightness = 0.7,
+	saturation = 0.8,
+	brightness = 0.7,
 }
 
 -- Support for undercurl, etc.
@@ -41,10 +88,10 @@ config.inactive_pane_hsb = {
 config.term = "wezterm"
 
 local colors = {
-  bg = "#0E1419",
-  black = "#000000",
-  dark_lilac = "#6D5978",
-  lilac = "#BAA0E8",
+	bg = "#0E1419",
+	black = "#000000",
+	dark_lilac = "#6D5978",
+	lilac = "#BAA0E8",
 }
 
 -- config.color_scheme = 'Dracula (Official)'
@@ -78,9 +125,9 @@ local colors = {
 -- Tab bar.
 config.hide_tab_bar_if_only_one_tab = true
 config.window_frame = {
-  font = wezterm.font("Monaspace Neon", { weight = "DemiBold" }),
-  active_titlebar_bg = colors.black,
-  inactive_titlebar_bg = colors.black,
+	font = wezterm.font("Monaspace Neon", { weight = "DemiBold" }),
+	active_titlebar_bg = colors.black,
+	inactive_titlebar_bg = colors.black,
 }
 
 -- config.cell_width = 0.9
@@ -115,12 +162,12 @@ config.hyperlink_rules = wezterm.default_hyperlink_rules()
 -- https://www.lua.org/pil/2.4.html#:~:text=bracketed%20form%20may%20run%20for%20several%20lines%2C%20may%20nest
 
 table.insert(config.hyperlink_rules, {
-  -- https://github.com/shinnn/github-username-regex  https://stackoverflow.com/a/64147124/5353461
-  regex = [[(^|(?<=[\[(\s'"]))([0-9A-Za-z][-0-9A-Za-z]{0,38})/([A-Za-z0-9_.-]{1,100})((?=[])\s'".!?])|$)]],
-  --  is/good  0valid0/-_.reponname  /bad/start  -bad/username  bad/end!  too/many/parts -bad/username
-  --  [wraped/name] (aa/bb) 'aa/bb' "aa/bb"  end/punct!  end/punct.
-  format = "https://www.github.com/$2/$3/",
-  -- highlight = 0,  -- highlight this regex match group, use 0 for all
+	-- https://github.com/shinnn/github-username-regex  https://stackoverflow.com/a/64147124/5353461
+	regex = [[(^|(?<=[\[(\s'"]))([0-9A-Za-z][-0-9A-Za-z]{0,38})/([A-Za-z0-9_.-]{1,100})((?=[])\s'".!?])|$)]],
+	--  is/good  0valid0/-_.reponname  /bad/start  -bad/username  bad/end!  too/many/parts -bad/username
+	--  [wraped/name] (aa/bb) 'aa/bb' "aa/bb"  end/punct!  end/punct.
+	format = "https://www.github.com/$2/$3/",
+	-- highlight = 0,  -- highlight this regex match group, use 0 for all
 })
 
 --
@@ -136,22 +183,22 @@ table.insert(config.hyperlink_rules, {
 
 -- @see https://github.com/githubnext/monaspace#coding-ligatures
 local ligature_features = {
-  -- @see https://learn.microsoft.com/en-us/typography/opentype/spec/features_ae#tag-calt
-  "calt", -- context alternatives
-  -- @see https://learn.microsoft.com/en-us/typography/opentype/spec/features_ae#tag-clig
-  "clig", -- contextual ligatures
-  "liga", -- ligatures
-  "dlig", -- discretionary ligatures
-  "ss01", -- ss01: ligatures related to the equals glyph like != and ===.
-  "ss02", -- ss02: ligatures related to the greater than or less than operators.
-  "ss03", -- ss03: ligatures related to arrows like -> and =>.
-  "ss04", -- ss04: ligatures related to markup, like </ and />.
-  "ss05", -- ss05: ligatures related to the F# programming language, like |>.
-  "ss06", -- ss06: ligatures related to repeated uses of # such as ## or ###.
-  "ss07", -- ss07: ligatures related to the asterisk like ***.
-  "ss08", -- ss08: ligatures related to combinations like .= or .-.
-  "ssty", -- math script style alternatives
-  "zero", -- slashed zero
+	-- @see https://learn.microsoft.com/en-us/typography/opentype/spec/features_ae#tag-calt
+	"calt", -- context alternatives
+	-- @see https://learn.microsoft.com/en-us/typography/opentype/spec/features_ae#tag-clig
+	"clig", -- contextual ligatures
+	"liga", -- ligatures
+	"dlig", -- discretionary ligatures
+	"ss01", -- ss01: ligatures related to the equals glyph like != and ===.
+	"ss02", -- ss02: ligatures related to the greater than or less than operators.
+	"ss03", -- ss03: ligatures related to arrows like -> and =>.
+	"ss04", -- ss04: ligatures related to markup, like </ and />.
+	"ss05", -- ss05: ligatures related to the F# programming language, like |>.
+	"ss06", -- ss06: ligatures related to repeated uses of # such as ## or ###.
+	"ss07", -- ss07: ligatures related to the asterisk like ***.
+	"ss08", -- ss08: ligatures related to combinations like .= or .-.
+	"ssty", -- math script style alternatives
+	"zero", -- slashed zero
 }
 
 -- Weights:
@@ -185,49 +232,59 @@ local ligature_features = {
 -- "Italic"
 
 local function isNil(param)
-  return param == nil
+	return param == nil
 end
 
 local function orDefault(param, fallback)
-  if isNil(param) then
-    return fallback
-  end
+	if isNil(param) then
+		return fallback
+	end
 
-  return param
+	return param
 end
 
 local defaultFontProperties = {
-  weight = "Regular",
-  stretch = "Normal",
-  style = "Normal",
-  harfbuzz_features = ligature_features,
+	weight = "Regular",
+	stretch = "Normal",
+	style = "Normal",
+	harfbuzz_features = ligature_features,
 }
 
 local function font_argon(params)
-  local p = orDefault(defaultFontProperties)
+	local p = orDefault(defaultFontProperties)
 
-  return {
-    family = "Monaspace Argon Var",
-    weight = p.weight or "Regular",
-    stretch = p.stretch or "Normal",
-    style = p.style or "Normal",
-    harfbuzz_features = ligature_features,
-  }
+	return {
+		family = "Monaspace Argon Var",
+		weight = p.weight or "Regular",
+		stretch = p.stretch or "Normal",
+		style = p.style or "Normal",
+		harfbuzz_features = ligature_features,
+	}
 end
 
 config.font = wezterm.font_with_fallback({
-  -- "Monaspace Radon",
-  font_argon(),
-  "JetBrains Mono",
-  "Noto Color Emoji",
-  -- 'Fira Code',
-  -- 'Operator Mono Lig',
-  -- 'Monoid',
-  -- 'Monoisome',
-  -- 'Menlo',
-  -- 'Hack',
-  -- 'JetBrains Mono',
-  -- 'monospace',
+	"Berkeley Mono",
+	"Mononoki",
+	"JetBrains Mono",
+	"Fira Code",
+	"Source Code Pro",
+	"Geist Mono",
+	-- "Inconsolata",
+	-- "Mononoki",
+	-- "Victor Mono",
+	-- "Input Mono",
+	-- "Maple Mono",
+	-- "Geist Mono",
+	-- "Iosevka",
+	-- "Monaspace Radon",
+	-- font_argon(),
+	-- "Noto Color Emoji",
+	-- 'Operator Mono Lig',
+	-- 'Monoid',
+	-- 'Monoisome',
+	-- 'Menlo',
+	-- 'Hack',
+	"monospace",
 })
 
 config.font_size = 14.85
@@ -240,92 +297,79 @@ config.freetype_load_target = "HorizontalLcd"
 
 -- @see https://wezfurlong.org/wezterm/config/lua/config/font_rules.html
 config.font_rules = {
-  --
-  -- Italic (comments)
-  --
-  {
-    intensity = "Normal",
-    italic = true,
-    font = wezterm.font({
-      family = "Monaspace Radon",
-      weight = "ExtraLight",
-      stretch = "Normal",
-      style = "Normal",
-      harfbuzz_features = ligature_features,
-    }),
-  },
-
-  --
-  -- Bold (highlighting)
-  --
-  {
-    intensity = "Bold",
-    italic = false,
-    font = wezterm.font({
-      family = "Monaspace Neon",
-      weight = "Medium",
-      stretch = "Normal",
-      style = "Normal",
-      harfbuzz_features = ligature_features,
-    }),
-  },
-
-  --
-  -- Bold Italic
-  --
-  {
-    intensity = "Bold",
-    italic = true,
-    font = wezterm.font({
-      family = "Monaspace Radon",
-      style = "Italic",
-      weight = "Bold",
-      harfbuzz_features = ligature_features,
-    }),
-  },
-
-  --
-  -- Half
-  --
-  {
-    intensity = "Half",
-    italic = false,
-    font = wezterm.font({
-      family = "Monaspace Argon Var",
-      style = "Normal",
-      weight = "ExtraLight",
-      harfbuzz_features = ligature_features,
-    }),
-  },
-
-  --
-  -- Half Italic
-  --
-  {
-    intensity = "Half",
-    italic = true,
-    font = wezterm.font({
-      family = "Monaspace Radon",
-      style = "Normal",
-      weight = "ExtraLight",
-      harfbuzz_features = ligature_features,
-    }),
-  },
+	--
+	-- Italic (comments)
+	--
+	{
+		intensity = "Normal",
+		italic = true,
+		font = wezterm.font({
+			family = "Monaspace Radon",
+			weight = "ExtraLight",
+			stretch = "Normal",
+			style = "Normal",
+			harfbuzz_features = ligature_features,
+		}),
+	},
+	--
+	-- Bold (highlighting)
+	--
+	{
+		intensity = "Bold",
+		italic = false,
+		font = wezterm.font({
+			family = "Monaspace Neon",
+			weight = "Medium",
+			stretch = "Normal",
+			style = "Normal",
+			harfbuzz_features = ligature_features,
+		}),
+	},
+	--
+	-- Bold Italic
+	--
+	{
+		intensity = "Bold",
+		italic = true,
+		font = wezterm.font({
+			family = "Monaspace Radon",
+			style = "Italic",
+			weight = "Bold",
+			harfbuzz_features = ligature_features,
+		}),
+	},
+	--
+	-- Half
+	--
+	{
+		intensity = "Half",
+		italic = false,
+		font = wezterm.font({
+			family = "Monaspace Argon Var",
+			style = "Normal",
+			weight = "ExtraLight",
+			harfbuzz_features = ligature_features,
+		}),
+	},
+	--
+	-- Half Italic
+	--
+	{
+		intensity = "Half",
+		italic = true,
+		font = wezterm.font({
+			family = "Monaspace Radon",
+			style = "Normal",
+			weight = "ExtraLight",
+			harfbuzz_features = ligature_features,
+		}),
+	},
 }
 
--- This is where you actually apply your config choices
-
--- For example, changing the color scheme:
--- config.color_scheme = 'Material (base16)'
--- config.color_scheme = 'MaterialDarker'
--- config.color_scheme = 'Material Darker (base16)'
--- config.color_scheme = "MaterialDesignColors"
-config.color_scheme = "Mikado (terminal.sexy)"
--- config.color_scheme = "Hardcore"
--- config.color_scheme = 'Codeschool (dark) (terminal.sexy)'
+config.font_rules = {}
 
 config.colors = {
-  visual_bell = "#202020",
+	visual_bell = "#202020",
 }
 
 --
@@ -333,38 +377,41 @@ config.colors = {
 --
 
 local misc = {
-  adjust_window_size_when_changing_font_size = false,
-  check_for_updates = true,
-  check_for_updates_interval_seconds = 86400,
-  enable_scroll_bar = true,
-  enable_kitty_keyboard = true, -- @see https://github.com/wez/wezterm/issues/3731
-  enable_csi_u_key_encoding = false, -- @see https://github.com/wez/wezterm/issues/3731
-  exit_behavior = "CloseOnCleanExit", -- Use 'Hold' to not close
-  hide_tab_bar_if_only_one_tab = true,
-  initial_cols = 140,
-  initial_rows = 40,
-  quote_dropped_files = "Posix",
-  switch_to_last_active_tab_when_closing_tab = true,
-  use_fancy_tab_bar = true,
-  window_decorations = "RESIZE",
-  -- macos_window_background_blur = 40,
-  -- macos_window_background_blur = 50,
-  -- window_background_opacity = 0.92,
-  window_background_opacity = 1.0,
-  -- window_background_opacity = 0.78,
-  -- window_background_opacity = 0.20,
+	adjust_window_size_when_changing_font_size = false,
+	check_for_updates = true,
+	check_for_updates_interval_seconds = 86400,
+	enable_scroll_bar = true,
+	enable_kitty_keyboard = true, -- @see https://github.com/wez/wezterm/issues/3731
+	enable_csi_u_key_encoding = false, -- @see https://github.com/wez/wezterm/issues/3731
+	exit_behavior = "CloseOnCleanExit", -- Use 'Hold' to not close
+	hide_tab_bar_if_only_one_tab = true,
+	initial_cols = 140,
+	initial_rows = 40,
+	quote_dropped_files = "Posix",
+	switch_to_last_active_tab_when_closing_tab = true,
+	use_fancy_tab_bar = true,
+	window_decorations = "RESIZE",
+	-- window_decorations = "INTEGRATED_BUTTONS|RESIZE",
+	-- macos_window_background_blur = 40,
+	macos_window_background_blur = 50,
+	-- window_background_opacity = 0.92,
+	-- window_background_opacity = 1.0,
+	window_background_opacity = 0.94,
+	-- window_background_opacity = 0.78,
+	-- window_background_opacity = 0.20,
 
-  audible_bell = "Disabled",
-  visual_bell = {
-    fade_out_function = "EaseOut",
-    fade_in_duration_ms = 75,
-    fade_out_duration_ms = 150,
-    target = "CursorColor",
-  },
+	pane_focus_follows_mouse = true,
+	audible_bell = "Disabled",
+	visual_bell = {
+		fade_out_function = "EaseOut",
+		fade_in_duration_ms = 75,
+		fade_out_duration_ms = 150,
+		target = "CursorColor",
+	},
 }
 
 for k, v in pairs(misc) do
-  config[k] = v
+	config[k] = v
 end
 
 -- Make underlines thicker
@@ -373,61 +420,153 @@ config.underline_thickness = "250%"
 
 -- @see https://wezfurlong.org/wezterm/config/lua/wezterm/permute_any_mods.html?h=mouse_bindings
 config.mouse_bindings = {
-  -- This will disable the default click to open URL behavior
-  {
-    event = { Up = { streak = 1, button = "Left" } },
-    mods = "NONE",
-    action = "Nop",
-  },
-  -- Ctrl-click will open the link under the mouse cursor
-  {
-    event = { Up = { streak = 1, button = "Left" } },
-    mods = "SUPER",
-    action = wezterm.action.OpenLinkAtMouseCursor,
-  },
+	-- This will disable the default click to open URL behavior
+	{
+		event = { Up = { streak = 1, button = "Left" } },
+		mods = "NONE",
+		action = "Nop",
+	},
+	-- Ctrl-click will open the link under the mouse cursor
+	{
+		event = { Up = { streak = 1, button = "Left" } },
+		mods = "SUPER",
+		action = wezterm.action.OpenLinkAtMouseCursor,
+	},
 }
 
 wezterm.on("format-tab-title", function(tab)
-  -- Get the process name.
-  local process = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
+	-- Get the process name.
+	local process = string.gsub(tab.active_pane.foreground_process_name, "(.*[/\\])(.*)", "%2")
 
-  -- Current working directory.
-  local cwd = tab.active_pane.current_working_dir
-  cwd = cwd and string.format("%s ", cwd.file_path:gsub(os.getenv("HOME"), "~")) or ""
+	-- Current working directory.
+	local cwd = tab.active_pane.current_working_dir
+	cwd = cwd and string.format("%s ", cwd.file_path:gsub(os.getenv("HOME"), "~")) or ""
 
-  -- Format and return the title.
-  return string.format("(%d %s) %s", tab.tab_index + 1, process, cwd)
+	-- Format and return the title.
+	return string.format("(%d %s) %s", tab.tab_index + 1, process, cwd)
 end)
 
+config.set_environment_variables = {
+	-- TODO: this opens without my config
+	PATH = os.getenv("HOME") .. "/.local/share/bob/nvim-bin:" .. os.getenv("PATH"),
+}
+
 config.keys = {
-  -- Disable ctrl - / ctrl = so that we can use them in Vim
-  { key = "-", mods = "CTRL", action = wezterm.action.Nop },
-  { key = "=", mods = "CTRL", action = wezterm.action.Nop },
+	-- Disable ctrl - / ctrl = so that we can use them in Vim
+	{ key = "-", mods = "CTRL", action = wezterm.action.Nop },
+	{ key = "=", mods = "CTRL", action = wezterm.action.Nop },
+	-- Make Option-Left equivalent to Alt-b which many line editors interpret as backward-word
+	{ key = "LeftArrow", mods = "OPT", action = wezterm.action({ SendString = "\x1bb" }) },
+	-- Make Option-Right equivalent to Alt-f; forward-word
+	{
+		key = "RightArrow",
+		mods = "OPT",
+		action = wezterm.action({ SendString = "\x1bf" }),
+	},
+	-- Select next tab with cmd-opt-left/right arrow
+	{
+		key = "LeftArrow",
+		mods = "CMD|OPT",
+		action = wezterm.action.ActivateTabRelative(-1),
+	},
+	{
+		key = "RightArrow",
+		mods = "CMD|OPT",
+		action = wezterm.action.ActivateTabRelative(1),
+	},
+	-- Select next pane with cmd-left/right arrow
+	{
+		key = "LeftArrow",
+		mods = "CMD",
+		action = wezterm.action({ ActivatePaneDirection = "Prev" }),
+	},
+	{
+		key = "RightArrow",
+		mods = "CMD",
+		action = wezterm.action({ ActivatePaneDirection = "Next" }),
+	},
+	-- Make cmd + , work to edit settings
+	{
+		key = ",",
+		mods = "SUPER",
+		action = wezterm.action.SpawnCommandInNewTab({
+			cwd = wezterm.home_dir,
+			args = { "nvim", wezterm.config_file },
+		}),
+	},
 }
 
 -- @see https://github.com/folke/zen-mode.nvim#wezterm
 wezterm.on("user-var-changed", function(window, pane, name, value)
-  local overrides = window:get_config_overrides() or {}
-  if name == "ZEN_MODE" then
-    local incremental = value:find("+")
-    local number_value = tonumber(value)
-    if incremental ~= nil then
-      while number_value > 0 do
-        window:perform_action(wezterm.action.IncreaseFontSize, pane)
-        number_value = number_value - 1
-      end
-      overrides.enable_tab_bar = false
-    elseif number_value < 0 then
-      window:perform_action(wezterm.action.ResetFontSize, pane)
-      overrides.font_size = nil
-      overrides.enable_tab_bar = true
-    else
-      overrides.font_size = number_value
-      overrides.enable_tab_bar = false
-    end
-  end
-  window:set_config_overrides(overrides)
+	local overrides = window:get_config_overrides() or {}
+	if name == "ZEN_MODE" then
+		local incremental = value:find("+")
+		local number_value = tonumber(value)
+		if incremental ~= nil then
+			while number_value > 0 do
+				window:perform_action(wezterm.action.IncreaseFontSize, pane)
+				number_value = number_value - 1
+			end
+			overrides.enable_tab_bar = false
+		elseif number_value < 0 then
+			window:perform_action(wezterm.action.ResetFontSize, pane)
+			overrides.font_size = nil
+			overrides.enable_tab_bar = true
+		else
+			overrides.font_size = number_value
+			overrides.enable_tab_bar = false
+		end
+	end
+	window:set_config_overrides(overrides)
 end)
 
 -- and finally, return the configuration to wezterm
 return config
+
+-- local function is_vim(pane)
+-- 	local is_vim_env = pane:get_user_vars().IS_NVIM == 'true'
+-- 	if is_vim_env == true then return true end
+-- 	-- This gsub is equivalent to POSIX basename(3)
+-- 	-- Given "/foo/bar" returns "bar"
+-- 	-- Given "c:\\foo\\bar" returns "bar"
+-- 	local process_name = string.gsub(pane:get_foreground_process_name(), '(.*[/\\])(.*)', '%2')
+-- 	return process_name == 'nvim' or process_name == 'vim'
+-- end
+
+-- --- cmd+keys that we want to send to neovim.
+-- local super_vim_keys_map = {
+-- 	s = utf8.char(0xAA),
+-- 	x = utf8.char(0xAB),
+-- 	b = utf8.char(0xAC),
+-- 	['.'] = utf8.char(0xAD),
+-- 	o = utf8.char(0xAF),
+-- }
+
+-- local function bind_super_key_to_vim(key)
+-- 	return {
+-- 		key = key,
+-- 		mods = 'CMD',
+-- 		action = wezterm.action_callback(function(win, pane)
+-- 			local char = super_vim_keys_map[key]
+-- 			if char and is_vim(pane) then
+-- 				-- pass the keys through to vim/nvim
+-- 				win:perform_action({
+-- 					SendKey = { key = char, mods = nil },
+-- 				}, pane)
+-- 			else
+-- 				win:perform_action({
+-- 					SendKey = {
+-- 						key = key,
+-- 						mods = 'CMD'
+-- 					}
+-- 				}, pane)
+-- 			end
+-- 		end)
+-- 	}
+-- end
+
+-- --- in your wezterm keys config, use it like:
+-- keys = {
+--    bind_super_key_to_vim('s'),
+--   --- others....
+-- }
