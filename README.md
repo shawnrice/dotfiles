@@ -1,30 +1,32 @@
 # @shawnrice's dotfiles
 
-These need to work in a few different contexts:
+Configuration files for macOS and Arch
 
-(1) MacOS
-(2) Arch Linux
-(3) WSL
+## What's Included
 
-Hence, we'll need to deal with some configuration. Ideally, I want to keep things as unified as
-possible, and so, I might have to write some wrappers around some things.
+- **zsh** - Shell with zim framework
+- **git** - Platform-specific configs (`.gitconfig.macos`, `.gitconfig.linux`)
+- **nvim** - Neovim configuration
+- **ghostty** - Terminal emulator
+- **zellij** - Terminal multiplexer
+- **bat, lazygit, btop** - CLI tools
+- **nix** - Package manager
 
-I'm not quite sure, yet, how to organize this, but I do need to get rid of a bunch of stuff
+## Installation
 
----
+```bash
+git clone https://github.com/shawnrice/dotfiles.git ~/projects/dotfiles
+ln -sf ~/projects/dotfiles/.zshrc ~/.zshrc
+ln -sf ~/projects/dotfiles/.gitconfig ~/.gitconfig
+ln -sf ~/projects/dotfiles/nvim/zeta.nvim ~/.config/nvim/zeta.nvim
+```
 
-There are some things here.
+Launch nvim with:
+```bash
+NVIM_APPNAME=zeta.nvim nvim
+```
 
-Things to look into:
-
-Zoxide
-https://github.com/ajeetdsouza/zoxide
-
-Z
-https://github.com/rupa/z
-
-ripgrep
-
-fzf
-fd
-silver searcher (ag)
+Or add an alias to your `.zshrc`:
+```bash
+alias zeta='NVIM_APPNAME=zeta.nvim nvim'
+```

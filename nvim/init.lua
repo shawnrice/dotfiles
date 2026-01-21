@@ -1,2 +1,0 @@
--- Placeholder for nvim config
--- Replace this with your actual config from your other machine

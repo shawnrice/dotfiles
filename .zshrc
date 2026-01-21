@@ -2,6 +2,7 @@ zmodload zsh/zprof
 
 typeset -F 3 SECONDS=0
 
+bindkey -r '^E'
 
 # Make the terminal not beep
 setopt no_beep
@@ -202,8 +203,9 @@ export LC_ALL=
 source_if_exists "${DOTS}/zsh/work/aliases.zsh"
 source_if_exists "${DOTS}/zsh/work/commands.zsh"
 
-# Used to profile things
-# zmodload zsh/zprof
+
+# Machine-specific config (not in git)
+source_if_exists ~/.zshrc.local
 
 # De-duplicate PATH elements
 source "${DOTS}/lib/dedupe_path.sh"
@@ -211,7 +213,5 @@ source "${DOTS}/lib/dedupe_path.sh"
 echo "Loaded in ${SECONDS} seconds"
 unset SECONDS
 
-# Machine-specific config (not in git)
-source_if_exists ~/.zshrc.local
+# === BELOW THIS LINE IS CRAP THAT HAS BEEN ADDED TO THIS FILE BY DUMB PROGRAMS ===
 
-# === AUTO-ADDED (move to .zshrc.local) ===
