@@ -1,0 +1,50 @@
+#!/bin/bash
+# Auto-move lines after the junk marker to .zshrc.local
+
+ZSHRC=".zshrc"
+LOCAL="$HOME/.zshrc.local"
+MARKER="# === AUTO-ADDED (move to .zshrc.local) ==="
+
+if [[ ! -f "$ZSHRC" ]]; then
+  exit 0
+fi
+
+# Check if marker exists
+if ! grep -qF "$MARKER" "$ZSHRC"; then
+  exit 0
+fi
+
+# Get line number of marker
+marker_line=$(grep -nF "$MARKER" "$ZSHRC" | head -1 | cut -d: -f1)
+total_lines=$(wc -l < "$ZSHRC")
+
+# Check if there's content after the marker (more than just the marker line)
+if [[ $marker_line -ge $total_lines ]]; then
+  exit 0
+fi
+
+# Extract lines after marker
+junk=$(tail -n +$((marker_line + 1)) "$ZSHRC")
+
+if [[ -z "$junk" || "$junk" =~ ^[[:space:]]*$ ]]; then
+  exit 0
+fi
+
+echo "Moving auto-added content to ~/.zshrc.local:"
+echo "$junk" | head -5
+[[ $(echo "$junk" | wc -l) -gt 5 ]] && echo "  ..."
+
+# Append to .zshrc.local
+echo "" >> "$LOCAL"
+echo "# Added $(date +%Y-%m-%d)" >> "$LOCAL"
+echo "$junk" >> "$LOCAL"
+
+# Remove junk from .zshrc (keep marker)
+head -n "$marker_line" "$ZSHRC" > "${ZSHRC}.tmp"
+mv "${ZSHRC}.tmp" "$ZSHRC"
+
+# Stage the cleaned .zshrc
+git add "$ZSHRC"
+
+echo "Content moved. Review ~/.zshrc.local and commit again."
+exit 1  # Abort this commit so you can review

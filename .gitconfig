@@ -1,14 +1,6 @@
 [user]
-
 name = Shawn Patrick Rice
 email = rice@shawnrice.org
-signingkey = A1B3F64C6036C3A4
-
-[credential]
-helper = osxkeychain
-
-[commit]
-gpgsign = true
 
 [alias]
 
@@ -126,8 +118,6 @@ whitespace = fix
 
 [core]
 
-editor = code --wait
-
 # Use custom `.gitignore` and `.gitattributes`
 excludesfile = ~/.gitignore_global
 attributesfile = ~/.gitattributes
@@ -170,10 +160,6 @@ untracked = cyan
 
 # Detect copies as well as renames
 renames = copies
-tool = default-difftool
-
-[difftool "default-difftool"]
-cmd = code --wait --diff $LOCAL $REMOTE
 
 [help]
 
@@ -216,3 +202,10 @@ pushInsteadOf = "git://gist.github.com/"
 insteadOf = "gist:"
 [pull]
 rebase = false
+
+# Platform-specific configs (loaded based on home directory path)
+[includeIf "gitdir:/Users/"]
+path = ~/.gitconfig.macos
+
+[includeIf "gitdir:/home/"]
+path = ~/.gitconfig.linux

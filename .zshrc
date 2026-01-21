@@ -112,8 +112,12 @@ PATH="${PATH}:${DOTS}/bin" # Add the dotfiles bin to the path
 
 builtin source "${DOTS}/lib/lib.sh" # Helpers needed further down
 
-if command_exists brew; then
-  BREW_PREFIX=$(brew --prefix)
+# Homebrew prefix - hardcoded for speed (brew --prefix is slow)
+# Apple Silicon: /opt/homebrew, Intel: /usr/local
+if [[ -d /opt/homebrew ]]; then
+  BREW_PREFIX=/opt/homebrew
+elif [[ -d /usr/local/Homebrew ]]; then
+  BREW_PREFIX=/usr/local
 fi
 
 # Load Oh-My-Zsh first
@@ -146,7 +150,18 @@ builtin source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
 builtin source "${DOTS}/zsh/nvim.zsh"
 
 # eval $(thefuck --alias)
-eval "$(zoxide init zsh)"
+
+# Cached zoxide init (regenerates if binary changes)
+_zoxide_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zoxide_init.zsh"
+if command_exists zoxide; then
+  _zoxide_bin="$(command -v zoxide)"
+  if [[ ! -f "$_zoxide_cache" || "$_zoxide_bin" -nt "$_zoxide_cache" ]]; then
+    zoxide init zsh > "$_zoxide_cache"
+  fi
+  source "$_zoxide_cache"
+  unset _zoxide_bin
+fi
+unset _zoxide_cache
 
 # LISTMAX=0
 # unsetopt LIST_AMBIGUOUS MENU_COMPLETE COMPLETE_IN_WORD
@@ -204,44 +219,13 @@ source_if_exists "${DOTS}/zsh/work/commands.zsh"
 # Used to profile things
 # zmodload zsh/zprof
 
-# bun completions
-[ -s "/Users/shawn/.bun/_bun" ] && source "/Users/shawn/.bun/_bun"
-
-export PATH="/opt/homebrew/bin:$PATH"
-
-if [[ -e /Applications/Ghostty.app/Contents/MacOS/ghostty ]]; then
-  alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
-fi
-
 # De-duplicate PATH elements
 source "${DOTS}/lib/dedupe_path.sh"
 
 echo "Loaded in ${SECONDS} seconds"
 unset SECONDS
 
-# See: https://ashby.slab.com/posts/tsc-running-out-of-memory-b1buu1bp
-export NODE_OPTIONS=--max-old-space-size=10000
+# Machine-specific config (not in git)
+source_if_exists ~/.zshrc.local
 
-export ASHBY_ROOT="/Users/shawn/projects/@ashbyhq/Ashby"
-
-# This assumes that the `dotfiles` repository lives next 
-# to the `Ashby` repository
-export ASHBY_RC="/Users/shawn/projects/@ashbyhq/dotfiles/.ashbyrc"
-source_if_exists $ASHBY_RC
-fpath=(/Users/shawn/projects/@ashbyhq/dotfiles//.zsh-completions $fpath)
-
-alias ashby="cd $ASHBY_ROOT"
-alias run_ashby="zellij --layout /Users/shawn/projects/run-ashby.kql"
-
-export CLAUDE_CODE_OAUTH_TOKEN=$(security find-generic-password -s "claude-code" -w)
-
-
-# export AWS_SESSION_TOKEN_TTL=8h
-# source /Users/shawn/.config/op/plugins.sh
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/shawn/.lmstudio/bin"
-# End of LM Studio CLI section
-# export OP_BIOMETRIC_UNLOCK_ENABLED=true
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+# === AUTO-ADDED (move to .zshrc.local) ===

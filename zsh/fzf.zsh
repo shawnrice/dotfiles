@@ -19,4 +19,14 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Source fzf keybindings and completion
+if [[ -f ~/.fzf.zsh ]]; then
+  source ~/.fzf.zsh
+elif [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+  # Arch Linux
+  source /usr/share/fzf/key-bindings.zsh
+  source /usr/share/fzf/completion.zsh
+elif command -v fzf &>/dev/null; then
+  # Modern fzf with built-in shell integration
+  source <(fzf --zsh)
+fi

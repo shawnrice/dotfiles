@@ -1,6 +1,26 @@
-# From OMZ
+# Clipboard functions (cross-platform)
 
-# Copies the path of given directory or file to the system or X Windows clipboard.
+function clipcopy() {
+  if [[ $OSTYPE == darwin* ]]; then
+    pbcopy
+  elif [[ -n $WAYLAND_DISPLAY ]]; then
+    wl-copy
+  elif [[ -n $DISPLAY ]]; then
+    xclip -selection clipboard
+  fi
+}
+
+function clippaste() {
+  if [[ $OSTYPE == darwin* ]]; then
+    pbpaste
+  elif [[ -n $WAYLAND_DISPLAY ]]; then
+    wl-paste
+  elif [[ -n $DISPLAY ]]; then
+    xclip -selection clipboard -o
+  fi
+}
+
+# Copies the path of given directory or file to the system clipboard.
 # Copy current directory if no parameter.
 function copypath {
   # If no argument passed, use current directory

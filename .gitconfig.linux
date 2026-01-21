@@ -1,0 +1,14 @@
+# Linux-specific git config
+
+[credential]
+    helper = /usr/lib/git-core/git-credential-libsecret
+
+[core]
+    # Use neovim as editor
+    editor = nvim
+
+[diff]
+    tool = nvimdiff
+
+[difftool "nvimdiff"]
+    cmd = nvim -d $LOCAL $REMOTE

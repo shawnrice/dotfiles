@@ -1,0 +1,14 @@
+# macOS-specific git config
+
+[credential]
+    helper = osxkeychain
+
+[core]
+    # Use VS Code as editor
+    editor = code --wait
+
+[diff]
+    tool = vscode
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
