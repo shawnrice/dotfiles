@@ -1,6 +1,27 @@
-# This acts as a library of functions that can be used by other scripts.
+# Shell utility functions
 
-source "${DOTS}/lib/command_exists.sh"
-source "${DOTS}/lib/source_if_exists.sh"
-source "${DOTS}/lib/find_up.sh"
-source "${DOTS}/lib/trim.zsh"
+function command_exists() {
+  (( $+commands[$1] ))
+}
+
+function source_if_exists() {
+  [[ -s "$1" ]] && builtin source "$1"
+}
+
+function find_up() {
+  local path=$(pwd)
+  while [[ "$path" != "" && ! -e "$path/$1" ]]; do
+    path=${path%/*}
+  done
+  echo "$path"
+}
+
+function trim() {
+  local var="${1##*( )}"
+  var="${var%%*( )}"
+  echo "$var"
+}
+
+function external_ip() {
+  curl -s "http://myexternalip.com/raw"
+}

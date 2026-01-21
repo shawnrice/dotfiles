@@ -108,7 +108,6 @@ builtin source "${DOTS}/lib/detect_os.sh" # Detect the OS
 # Add a couple of things to the path
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/usr/local/sbin"
-PATH="${PATH}:${DOTS}/bin" # Add the dotfiles bin to the path
 
 builtin source "${DOTS}/lib/lib.sh" # Helpers needed further down
 
@@ -132,7 +131,7 @@ builtin source "${DOTS}/zsh/git.zsh"
 builtin source "${DOTS}/zsh/starship.zsh" # Configure prompt
 builtin source "${DOTS}/zsh/utils.zsh"
 builtin source "${DOTS}/zsh/wezterm.zsh"
-
+builtin source "${DOTS}/zellij/aliases.zsh"
 
 # Add different programming env paths and tool bins
 builtin source "${DOTS}/zsh/bun.zsh"
