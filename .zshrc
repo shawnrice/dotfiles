@@ -102,9 +102,6 @@ unset get_dots
 # Load the zim framework
 builtin source "${DOTS}/zsh/zim.zsh"
 
-# Sets approprate environment variables for the OS
-builtin source "${DOTS}/lib/detect_os.sh" # Detect the OS
-
 # Add a couple of things to the path
 export PATH="$PATH:/usr/local/bin"
 export PATH="$PATH:/usr/local/sbin"
@@ -125,19 +122,16 @@ fi
 builtin source "${DOTS}/zsh/cmp.zsh" # Add more completion
 
 builtin source "${DOTS}/zsh/aliases.zsh"
-builtin source "${DOTS}/zsh/brew.zsh"
 builtin source "${DOTS}/zsh/fzf.zsh" # Add fzf config
 builtin source "${DOTS}/zsh/starship.zsh" # Configure prompt
 builtin source "${DOTS}/zsh/git/cleanup.zsh"
-builtin source "${DOTS}/zsh/wezterm.zsh"
+builtin source "${DOTS}/zsh/macos.zsh"
 builtin source "${DOTS}/zellij/aliases.zsh"
 
 # Add different programming env paths and tool bins
 builtin source "${DOTS}/zsh/fnm.zsh" # Configure the fast node manager
 builtin source "${DOTS}/zsh/langs.zsh" # Bun, dotnet, go, rust, yarn
 
-
-builtin source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
 
 builtin source "${DOTS}/zsh/nvim.zsh"
 
