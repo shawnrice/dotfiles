@@ -1,3 +1,4 @@
 .DS_Store
 zsh/work
 .zim
+# Machine-specific local config lives at ~/.zshrc.local (outside repo)

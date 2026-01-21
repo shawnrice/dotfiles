@@ -1,0 +1,20 @@
+# Machine-specific zsh config (copy to ~/.zshrc.local)
+# This file is not tracked in git
+
+# === Work (Ashby) ===
+# export NODE_OPTIONS=--max-old-space-size=10000
+# export ASHBY_ROOT="$HOME/projects/@ashbyhq/Ashby"
+# export ASHBY_RC="$HOME/projects/@ashbyhq/dotfiles/.ashbyrc"
+# source_if_exists $ASHBY_RC
+# fpath=($HOME/projects/@ashbyhq/dotfiles/.zsh-completions $fpath)
+# alias ashby="cd $ASHBY_ROOT"
+
+# === Claude Code ===
+# macOS: export CLAUDE_CODE_OAUTH_TOKEN=$(security find-generic-password -s "claude-code" -w)
+# Linux: handled by gnome-keyring or similar
+
+# === Tool-specific paths ===
+# export PATH="$PATH:$HOME/.lmstudio/bin"
+
+# === Shell integrations ===
+# [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

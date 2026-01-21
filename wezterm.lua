@@ -36,35 +36,6 @@ wezterm.on("window-config-reloaded", function(window, _)
 	window:set_config_overrides(find_color_scheme())
 end)
 
--- This is where you actually apply your config choices
-
--- For example, changing the color scheme:
--- config.color_scheme = 'Material (base16)'
--- config.color_scheme = 'MaterialDarker'
--- config.color_scheme = 'Material Darker (base16)'
--- config.color_scheme = "MaterialDesignColors"
--- config.color_scheme = "Mikado (terminal.sexy)"
--- config.color_scheme = "Ef-Dream"
--- config.color_scheme = 'Everforest Dark Hard (Gogh)'
--- config.color_scheme = 'Everforest Dark Medium (Gogh)'
--- config.color_scheme = "Everforest Dark (Gogh)"
--- config.color_scheme = 'Embers (base16)'
--- config.color_scheme = 'Github Dark (Gogh)'
--- config.color_scheme = 'Gooey (Gogh)'
--- config.color_scheme = 'Gogh (Gogh)'
--- config.color_scheme = 'Gruvbox Dark (Gogh)'
--- config.color_scheme = 'Gruvbox dark, hard (base16)'
--- config.color_scheme = 'Gruvbox Material (Gogh)'
--- config.color_scheme = 'Chalk (base16)'
--- config.color_scheme = '3024 (dark) (terminal.sexy)'
--- config.color_scheme = 'Tomorrow Night Bright (Gogh)'
--- config.color_scheme = 'Tomorrow (dark) (terminal.sexy)'
-
--- config.color_scheme = "Hardcore"
--- config.color_scheme = 'Codeschool (dark) (terminal.sexy)'
--- config.color_scheme = "Twilight (dark) (terminal.sexy)"
--- config.color_scheme = "tokyonight_night"
--- config.color_scheme = "nordfox"
 config.color_scheme = find_color_scheme()
 
 -- Remove extra space.
@@ -366,8 +337,6 @@ config.font_rules = {
 	},
 }
 
-config.font_rules = {}
-
 config.colors = {
 	visual_bell = "#202020",
 }
@@ -520,53 +489,4 @@ wezterm.on("user-var-changed", function(window, pane, name, value)
 	window:set_config_overrides(overrides)
 end)
 
--- and finally, return the configuration to wezterm
 return config
-
--- local function is_vim(pane)
--- 	local is_vim_env = pane:get_user_vars().IS_NVIM == 'true'
--- 	if is_vim_env == true then return true end
--- 	-- This gsub is equivalent to POSIX basename(3)
--- 	-- Given "/foo/bar" returns "bar"
--- 	-- Given "c:\\foo\\bar" returns "bar"
--- 	local process_name = string.gsub(pane:get_foreground_process_name(), '(.*[/\\])(.*)', '%2')
--- 	return process_name == 'nvim' or process_name == 'vim'
--- end
-
--- --- cmd+keys that we want to send to neovim.
--- local super_vim_keys_map = {
--- 	s = utf8.char(0xAA),
--- 	x = utf8.char(0xAB),
--- 	b = utf8.char(0xAC),
--- 	['.'] = utf8.char(0xAD),
--- 	o = utf8.char(0xAF),
--- }
-
--- local function bind_super_key_to_vim(key)
--- 	return {
--- 		key = key,
--- 		mods = 'CMD',
--- 		action = wezterm.action_callback(function(win, pane)
--- 			local char = super_vim_keys_map[key]
--- 			if char and is_vim(pane) then
--- 				-- pass the keys through to vim/nvim
--- 				win:perform_action({
--- 					SendKey = { key = char, mods = nil },
--- 				}, pane)
--- 			else
--- 				win:perform_action({
--- 					SendKey = {
--- 						key = key,
--- 						mods = 'CMD'
--- 					}
--- 				}, pane)
--- 			end
--- 		end)
--- 	}
--- end
-
--- --- in your wezterm keys config, use it like:
--- keys = {
---    bind_super_key_to_vim('s'),
---   --- others....
--- }
