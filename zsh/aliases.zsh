@@ -1,7 +1,13 @@
+# Navigation
 alias projects="cd ${HOME}/projects"
 alias p="projects"
 alias dotfiles="cd ${HOME}/projects/dotfiles"
+
+# Config editing
 alias zshconfig="$EDITOR ~/.zshrc"
-alias ohmyzsh="code ~/.oh-my-zsh"
-alias github="hub"
+
+# Git
 alias gco="git checkout"
+
+# Modern replacements (conditional)
+command -v eza &>/dev/null && alias ls="eza" && alias ll="eza -la" && alias la="eza -a" && alias tree="eza --tree"

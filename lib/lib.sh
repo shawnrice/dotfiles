@@ -25,3 +25,7 @@ function trim() {
 function external_ip() {
   curl -s "http://myexternalip.com/raw"
 }
+
+function reload() {
+  exec zsh
+}

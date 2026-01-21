@@ -127,23 +127,16 @@ builtin source "${DOTS}/zsh/cmp.zsh" # Add more completion
 builtin source "${DOTS}/zsh/aliases.zsh"
 builtin source "${DOTS}/zsh/brew.zsh"
 builtin source "${DOTS}/zsh/fzf.zsh" # Add fzf config
-builtin source "${DOTS}/zsh/git.zsh"
 builtin source "${DOTS}/zsh/starship.zsh" # Configure prompt
-builtin source "${DOTS}/zsh/utils.zsh"
+builtin source "${DOTS}/zsh/git/cleanup.zsh"
 builtin source "${DOTS}/zsh/wezterm.zsh"
 builtin source "${DOTS}/zellij/aliases.zsh"
 
 # Add different programming env paths and tool bins
-builtin source "${DOTS}/zsh/bun.zsh"
-builtin source "${DOTS}/zsh/dotnet.zsh"
 builtin source "${DOTS}/zsh/fnm.zsh" # Configure the fast node manager
-builtin source "${DOTS}/zsh/go.zsh"
-builtin source "${DOTS}/zsh/node.zsh"
-builtin source "${DOTS}/zsh/rust.zsh"
-builtin source "${DOTS}/zsh/yarn.zsh"
+builtin source "${DOTS}/zsh/langs.zsh" # Bun, dotnet, go, rust, yarn
 
 
-builtin source "${DOTS}/zsh/color_cat.zsh" # Add colors to cat
 builtin source "${DOTS}/zsh/color_man_pages.zsh" # Add colors to man page
 
 builtin source "${DOTS}/zsh/nvim.zsh"

@@ -8,6 +8,9 @@
 
 # Remove older command from the history if a duplicate is to be added.
 setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS      # Remove superfluous blanks
+setopt HIST_FIND_NO_DUPS       # Don't show dupes when searching
+setopt HIST_EXPIRE_DUPS_FIRST  # Expire dupes first when trimming
 
 #
 # Input/output

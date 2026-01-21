@@ -1,3 +1,0 @@
-function reload() {
-  exec zsh
-}
