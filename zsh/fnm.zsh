@@ -8,15 +8,15 @@ fi
 # Commands that trigger fnm initialization
 _FNM_LAZY_CMDS=(node npm npx yarn pnpm fnm nvm corepack)
 
-_fnm_init() {
-  # Remove lazy stubs
-  for cmd in $_FNM_LAZY_CMDS; do
+fnm_init() {
+  # Remove lazy stubs (hardcoded - $_FNM_LAZY_CMDS may not exist in shell snapshots)
+  for cmd in node npm npx yarn pnpm fnm nvm corepack; do
     unfunction "$cmd" 2>/dev/null
   done
-  unfunction _fnm_init
+  unfunction fnm_init 2>/dev/null
 
-  # Actually initialize fnm
-  eval "$(fnm env)"
+  # Actually initialize fnm (use 'command' to bypass any stub)
+  eval "$(command fnm env)"
   alias nvm="fnm"
 
   # Set up the autoload hook for .nvmrc
@@ -41,6 +41,6 @@ _fnm_init() {
 
 # Create lazy stub for each command
 for cmd in $_FNM_LAZY_CMDS; do
-  eval "function $cmd() { _fnm_init && $cmd \"\$@\" }"
+  eval "function $cmd() { fnm_init && $cmd \"\$@\" }"
 done
 unset cmd
