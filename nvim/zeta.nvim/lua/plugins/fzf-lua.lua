@@ -161,6 +161,11 @@ local M = {
 			{ noremap = true, desc = "[F]ind [R]esume" }
 		)
 		vim.keymap.set("n", "<leader>gf", "<cmd>FzfLua git_files<cr>", { noremap = true, desc = "[G]it [F]iles" })
+
+		-- Navigation history
+		vim.keymap.set("n", "<leader>fj", "<cmd>FzfLua jumps<cr>", { noremap = true, desc = "[F]ind [J]umps" })
+		vim.keymap.set("n", "<leader>fm", "<cmd>FzfLua marks<cr>", { noremap = true, desc = "[F]ind [M]arks" })
+		vim.keymap.set("n", "<leader>fq", "<cmd>FzfLua quickfix<cr>", { noremap = true, desc = "[F]ind [Q]uickfix" })
 	end,
 }
 
