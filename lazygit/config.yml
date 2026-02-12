@@ -28,3 +28,9 @@ gui:
       - '#ebdbb2'  # gruvbox fg
   border: rounded
   nerdFontsVersion: '3'
+git:
+  pagers:
+    - externalDiffCommand: difft --color=always
+    - externalDiffCommand: difft --color=always --display inline
+    - pager: delta --dark --paging=never
+

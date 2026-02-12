@@ -1,9 +1,109 @@
 [user]
 name = Shawn Patrick Rice
 email = rice@shawnrice.org
+branchPrefix = shawn
+
+[core]
+# Use custom `.gitignore` and `.gitattributes`
+excludesfile = ~/.gitignore_global
+attributesfile = ~/.gitattributes
+
+# Treat spaces before tabs and all kinds of trailing whitespace as an error
+whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+
+# Make `git rebase` safer on OS X
+trustctime = false
+
+editor = nvim
+pager = delta
+
+[interactive]
+diffFilter = delta --color-only
+
+[delta]
+navigate = true
+true-color = always
+features = line-numbers decorations
+syntax-theme = "none"
+plus-style = "syntax #405C4F"                  # Dark muted green for additions
+minus-style = "syntax #803C3D"                 # Dark muted red for deletions
+line-numbers-minus-style = "#CBA4A4"           # Slight red tint for line numbers of deletions
+line-numbers-plus-style = "#A4CBA4"            # Slight green tint for line numbers of additions
+side-by-side-decoration-style = "bold #81A1C1" # Calm blue
+whitespace-error-style = "syntax #BF616A"      # Muted red for errors
+highlight-removed-style = "bold #A04E4F"       # Slightly brighter muted red for emphasis
+highlight-added-style = "bold #4F7B66"         # Slightly brighter green for emphasis
+line-numbers-style = "#E5E9F0"                 # Base style, brighter light gray
+
+[delta "decorations"]
+commit-decoration-style = bold "#F9EE98" box ul # Twilight yellow
+file-style = bold "#7587A6" ul                  # Twilight blue
+file-decoration-style = none
+hunk-header-decoration-style = "#9B859D" box ul # Twilight magenta
+
+[delta "line-numbers"]
+line-numbers-left-style = "#AFC4DB" # Twilight cyan
+line-numbers-right-style = "#AFC4DB"
+line-numbers-minus-style = "#CF6A4C" # Twilight red
+line-numbers-plus-style = "#8F9D6A"  # Twilight green
+
+[diff]
+# Detect copies as well as renames
+renames = copies
+external = difft --display inline
+
+[pager]
+difftool = true
+branch = false
+
+[color]
+# Use colors in Git commands that are capable of colored output when
+# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+ui = auto
+
+[color "branch"]
+current = yellow reverse
+local = yellow
+remote = green
+
+[color "diff"]
+meta = yellow bold
+frag = magenta bold # line info
+old = red           # deletions
+new = green         # additions
+
+[color "status"]
+added = yellow
+changed = green
+untracked = cyan
+
+[apply]
+# Detect whitespace errors when applying a patch
+whitespace = fix
+
+[help]
+# Automatically correct and execute mistyped commands
+autocorrect = 1
+
+[merge]
+# Include summaries of merged commits in newly created merge commit messages
+log = true
+conflictstyle = zdiff3
+
+[push]
+default = current
+autoSetupRemote = true
+
+[pull]
+rebase = false
+
+[init]
+defaultBranch = main
+
+[rerere]
+enabled = true
 
 [alias]
-
 # View abbreviated SHA, description, and history graph of the latest 20 commits
 l = log --pretty=oneline -n 20 --graph --abbrev-commit
 
@@ -55,7 +155,6 @@ fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen 
 fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
 
 # Remove branches that have already been merged with master
-# a.k.a. ‘delete merged’
 dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
 # List contributors with number of commits
@@ -72,23 +171,23 @@ contributors = shortlog --summary --numbered
 standup = "!f() { : git log ; \
                 if [ $# -gt 0 ] && [[ $1 != -* ]];\
                 then\
-                        SINCE="${1}";\
+                        SINCE=\"${1}\";\
                         shift;\
                         if [ $# -gt 0 ] && [[ $1 != -* ]];\
                         then\
-                                UNTIL="${1}";\
+                                UNTIL=\"${1}\";\
                                 shift;\
                         fi;\
                 else\
                         if [ $(date +%u) -lt 2 ];\
                         then\
-                                SINCE="\"last friday AM\"";\
+                                SINCE=\"last friday AM\";\
                         fi\
                 fi;\
-                SINCE="${SINCE:-yesterday AM}";\
-                UNTIL="${UNTIL:-now}";\
-                COMMITTER="$(git config user.name)";\
-                git log --since "\"${SINCE}\"" --until "\"${UNTIL}\"" --committer="\"${COMMITTER}\"" --all --abbrev-commit --no-merges --date=local --oneline "\"$@\"";\
+                SINCE=\"${SINCE:-yesterday AM}\";\
+                UNTIL=\"${UNTIL:-now}\";\
+                COMMITTER=\"$(git config user.name)\";\
+                git log --since \"${SINCE}\" --until \"${UNTIL}\" --committer=\"${COMMITTER}\" --all --abbrev-commit --no-merges --date=local --oneline \"$@\";\
         }; f"
 
 cleanup = "!f() { git fetch && git remote prune origin && git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d; }; f"
@@ -97,113 +196,73 @@ origin = config --get remote.origin.url
 
 open = "!f() { git config --get remote.origin.url | sed 's/.\\{4\\}$//' | xargs open; }; f"
 
-# A few things from ...
-# https://haacked.com/archive/2014/07/28/github-flow-aliases/
+# A few things from https://haacked.com/archive/2014/07/28/github-flow-aliases/
 # Find a different name
 # done = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
-
-#   bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
-#   bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+# bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+# bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
 
 # Saves the current work to a headless commit and resets the branch
 wipe = "!git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard"
 
-# work on this... it should show previous wipes to restore
+# Work on this... it should show previous wipes to restore
 wipes = "!git log -g --abbrev-commit --pretty=oneline --date=short | grep \"HEAD\" | cut -d \" \" -f 1-3"
 
-[apply]
+# Interactive fzf-based aliases
+recent = !git branch --sort=-authordate | fzf --height=20% --query="$(git config user.branchPrefix || whoami)/" --no-sort --preview 'git log --pretty=oneline develop..{-1} --color=always' --bind 'enter:become(git switch {-1})'
 
-# Detect whitespace errors when applying a patch
-whitespace = fix
+ds = "!f() { git stash list --format=\"%gd %cr: %s\" | fzf --multi --height=80% --preview 'git show --pretty=oneline --color=always --patch $(echo {} | cut -d\" \" -f1)' --preview-window=right:60% --header=\"j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top\" --bind=\"ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel\" | cut -d\" \" -f1 | while read -r stash; do git stash drop \"$stash\"; done; }; f"
 
-[core]
+addm = "!f() { git ls-files --deleted --modified --other --exclude-standard | fzf --multi --height=80% --preview 'git diff --color=always {-1}' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | xargs -r git add; }; f"
 
-# Use custom `.gitignore` and `.gitattributes`
-excludesfile = ~/.gitignore_global
-attributesfile = ~/.gitattributes
+addmp = "!f() { git ls-files --deleted --modified --exclude-standard | fzf --multi --height=80% --preview 'git diff --color=always {-1}' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | xargs -r -o git add -p; }; f"
 
-# Treat spaces before tabs and all kinds of trailing whitespace as an error
-# [default] trailing-space: looks for spaces at the end of a line
-# [default] space-before-tab: looks for spaces before tabs at the beginning of a line
-whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+cb = "!f() { git for-each-ref --sort=-committerdate refs/heads/ refs/remotes/ --format='%(refname:short)' | grep -v HEAD | sed 's/origin\\///' | uniq | fzf --height=80% --preview 'git show --color=always {}' --preview-window=right:60% --header='j/k: nav, ?: search, esc: cancel, ctrl-j/ctrl-k: scroll preview, G/g: bottom/top' --bind='j:down,k:up,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,?:toggle-search,esc:cancel' | xargs -r git checkout; }; f"
 
-# Make `git rebase` safer on OS X
-# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
-trustctime = false
+cs = "!f() { git stash list | fzf --height=80% --preview 'git show --pretty=oneline --color=always --patch \"$(echo {} | cut -d: -f1)\"' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | cut -d: -f1 | xargs -r git stash pop; }; f"
 
-[color]
+db = "!f() { git branch | grep -v '^[*+]' | awk '{print $1}' | fzf --multi --height=80% --preview 'git show --color=always {-1}' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | xargs -r git branch --delete; }; f"
 
-# Use colors in Git commands that are capable of colored output when
-# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
-ui = auto
+Db = "!f() { git branch | grep -v '^[*+]' | awk '{print $1}' | fzf --multi --height=80% --preview 'git show --color=always {-1}' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | xargs -r git branch --delete --force; }; f"
 
-[color "branch"]
+edit = "!f() { git ls-files --modified --other --exclude-standard | sort -u | fzf --multi --height=80% --preview 'git diff --color {}' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | xargs -r $EDITOR -p; }; f"
 
-current = yellow reverse
-local = yellow
-remote = green
+fixup = "!f() { git log --oneline --no-decorate --no-merges | fzf --height=80% --preview 'git show --color=always {1}' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | awk '{print $1}' | xargs -r git commit --fixup; }; f"
 
-[color "diff"]
+resetm = "!f() { git diff --name-only --cached | fzf --multi --height=80% --preview 'git diff --color=always {-1}' --preview-window=right:60% --header='j/k: nav, space: select, /: search, esc: cancel, ctrl-j/k: scroll preview, G/g: bottom/top' --bind='ctrl-a:toggle-all,j:down,k:up,space:toggle,ctrl-j:preview-down,ctrl-k:preview-up,G:last,g:first,/:toggle-search,esc:cancel' | xargs -r git reset; }; f"
 
-meta = yellow bold
-frag = magenta bold # line info
-old = red           # deletions
-new = green         # additions
+# difft integration
+diffl = -c diff.external=difft log -p --ext-diff
+diffs = -c diff.external=difft show --ext-diff
+dft = -c diff.external=difft diff
 
-[color "status"]
+dd = "!git diff $(git merge-base --fork-point \"$(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@^origin/@@')\" HEAD) HEAD"
 
-added = yellow
-changed = green
-untracked = cyan
+branchd = "!git for-each-ref --sort=-committerdate refs/heads/ --format='%(if)%(HEAD)%(then)* %(else)  %(end)%(refname:short)%09%(objectname:short)%09(%(committerdate:relative))%09%(subject)' | column -t -s $'\t'"
 
-[diff]
-
-# Detect copies as well as renames
-renames = copies
-
-[help]
-
-# Automatically correct and execute mistyped commands
-autocorrect = 1
-
-[merge]
-
-# Include summaries of merged commits in newly created merge commit messages
-log = true
-
-[push]
-
-# Use the Git 1.x.x default to avoid errors on machines with old Git
-# installations. To use `simple` instead, add this to your `~/.extra` file:
-# `git config --global push.default simple`. See http://git.io/mMah-w.
-# default = matching
-default = upstream
+diffdelta = "!f() { git -c diff.external=\"\" -c core.pager=\"delta\" diff \"$@\"; }; f"
 
 # URL shorthands
-
 [url "git@github.com:"]
-
 insteadOf = "gh:"
 pushInsteadOf = "github:"
 pushInsteadOf = "git://github.com/"
 
 [url "git://github.com/"]
-
 insteadOf = "github:"
 
 [url "git@gist.github.com:"]
-
 insteadOf = "gst:"
 pushInsteadOf = "gist:"
 pushInsteadOf = "git://gist.github.com/"
 
 [url "git://gist.github.com/"]
-
 insteadOf = "gist:"
-[pull]
-rebase = false
 
-# Platform-specific configs (loaded based on home directory path)
+# Conditional includes - load additional configs based on directory
+[includeIf "gitdir:~/projects/@ashbyhq/"]
+path = ~/.gitconfig.ashby
+
 [includeIf "gitdir:/Users/"]
 path = ~/.gitconfig.macos
 

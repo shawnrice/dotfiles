@@ -1,0 +1,5 @@
+# Ashby-specific git config
+# This is loaded for repos under ~/projects/Ashby/
+
+[user]
+email = shawn@ashbyhq.com

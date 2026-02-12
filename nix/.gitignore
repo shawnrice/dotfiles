@@ -1,0 +1,6 @@
+# Nix build outputs
+result
+result-*
+
+# Nix development shells
+.direnv/

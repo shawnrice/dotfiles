@@ -9,59 +9,63 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # macOS system configuration
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-ai-tools = {
+      url = "github:numtide/nix-ai-tools";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, darwin, ... }:
     let
-      # Helper to make home-manager config for a given system
-      mkHome = { system, username, homeDirectory, extraModules ? [] }:
+      overlays = {};
+
+      # Load nix-darwin with home-manager integrated
+      loadDarwin = import ./load-darwin.nix { inherit self inputs overlays; };
+
+      # Helper to make standalone home-manager config (for Linux)
+      mkHome = { system, machine }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
-          modules = [
-            ./home/common.nix
-            {
-              home = {
-                inherit username homeDirectory;
-                stateVersion = "24.05";
-              };
-            }
-          ] ++ extraModules;
+          modules = [ machine ];
+          extraSpecialArgs = {
+            inherit inputs;
+          };
         };
     in
     {
-      # Home Manager configurations
-      homeConfigurations = {
-        # Arch Linux
-        "shawn@arch" = mkHome {
-          system = "x86_64-linux";
-          username = "shawn";
-          homeDirectory = "/home/shawn";
-          extraModules = [ ./home/linux.nix ];
-        };
-
-        # macOS (Apple Silicon)
-        "shawn@work-mac" = mkHome {
+      # nix-darwin system configurations (macOS only)
+      darwinConfigurations = {
+        # Current machine (Apple Silicon)
+        "Shawns-Ashby-MacBook" = loadDarwin {
           system = "aarch64-darwin";
-          username = "shawn";
-          homeDirectory = "/Users/shawn";
-          extraModules = [ ./home/darwin.nix ];
+          machine = ./machines/shawns-ashby-macbook;
         };
 
-        # macOS (Intel) - adjust hostname as needed
-        "shawn@personal-mac" = mkHome {
-          system = "x86_64-darwin";
-          username = "shawn";
-          homeDirectory = "/Users/shawn";
-          extraModules = [ ./home/darwin.nix ];
+        # Generic template for new Macs
+        generic-darwin = loadDarwin {
+          system = "aarch64-darwin";
+          machine = ./machines/generic-darwin;
         };
       };
 
-      # Optional: nix-darwin system configurations for macOS
-      # darwinConfigurations = { ... };
+      # Home Manager configurations (standalone for Linux)
+      homeConfigurations = {
+        # Arch Linux with Hyprland
+        "shawn@spaceman" = mkHome {
+          system = "x86_64-linux";
+          machine = ./machines/spaceman;
+        };
+
+        # Generic Linux template
+        "shawn@generic-linux" = mkHome {
+          system = "x86_64-linux";
+          machine = ./machines/generic-linux;
+        };
+      };
     };
 }
