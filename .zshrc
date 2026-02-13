@@ -215,3 +215,12 @@ unset SECONDS
 
 # === BELOW THIS LINE IS CRAP THAT HAS BEEN ADDED TO THIS FILE BY DUMB PROGRAMS ===
 
+
+# peon-ping quick controls
+alias peon="bash ~/.claude/hooks/peon-ping/peon.sh"
+[ -f ~/.claude/hooks/peon-ping/completions.bash ] && source ~/.claude/hooks/peon-ping/completions.bash
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/shawn/.lmstudio/bin"
+# End of LM Studio CLI section
+
