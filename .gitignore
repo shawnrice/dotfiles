@@ -2,3 +2,6 @@
 zsh/work
 .zim
 # Machine-specific local config lives at ~/.zshrc.local (outside repo)
+
+# Binary plugins — managed via Nix overlay, not checked in
+*.wasm

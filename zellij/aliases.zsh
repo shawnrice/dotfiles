@@ -11,3 +11,16 @@ function zpipe() {
     zellij pipe -p $1
   fi
 }
+
+function zj() {
+  if [ -n "$1" ]; then
+    zellij attach "$1" -c
+  else
+    local session=$(zellij list-sessions -s 2>/dev/null | fzf --prompt="session: ")
+    if [ -n "$session" ]; then
+      zellij attach "$session"
+    else
+      zellij
+    fi
+  fi
+}

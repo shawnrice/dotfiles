@@ -39,8 +39,12 @@ font-feature = zero
 
 # theme = nightfox
 theme = dark:Gruvbox Dark Hard,light:Gruvbox Light Hard
+window-theme = ghostty
 
 # Keybinds
+
+# Pass Ctrl+W through to terminal apps (Zellij, Neovim, etc.)
+keybind = ctrl+w=unbind
 
 keybind = super+d=new_split:right
 keybind = super+t=new_tab
@@ -71,5 +75,7 @@ shell-integration = detect
 quick-terminal-position = center
 
 scrollback-limit = 500000000
+
+# bell-features = title
 
 # vim: set ft=conf

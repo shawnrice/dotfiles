@@ -9,6 +9,12 @@ table.insert(M, {
 			},
 			disable_netrw = false, -- Don't disable netrw completely
 			hijack_netrw = false, -- Don't replace netrw
+			sync_root_with_cwd = true,
+			respect_buf_cwd = true,
+			update_focused_file = {
+				enable = true,
+				update_root = true,
+			},
 			view = {
 				float = {
 					enable = true,
@@ -59,6 +65,9 @@ table.insert(M, {
 	---@type oil.SetupOpts
 	opts = {
 		default_file_explorer = false,
+	},
+	keys = {
+		{ "<leader>o", "<cmd>Oil<cr>", desc = "Open Oil (parent dir)" },
 	},
 	priority = 49,
 	dependencies = { { "nvim-mini/mini.icons", version = "*" } },
@@ -178,18 +187,29 @@ table.insert(M, {
 	},
 })
 
--- https://github.com/DNLHC/glance.nvim
--- A pretty preview window for Neovim that provides VSCode-like peek preview functionality for LSP locations
-
---
+-- Peek preview for definitions, references, implementations without losing context
 table.insert(M, {
-	"hedyhli/outline.nvim",
-	lazy = true,
-	cmd = { "Outline", "OutlineOpen" },
-	keys = { -- Example mapping to toggle outline
-		{ "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
-	},
+	"DNLHC/glance.nvim",
+	cmd = "Glance",
 	opts = {},
+})
+
+-- Persistent browsable results panel for diagnostics, references, symbols
+table.insert(M, {
+	"folke/trouble.nvim",
+	cmd = "Trouble",
+	opts = {},
+	keys = {
+		{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+		{ "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer diagnostics (Trouble)" },
+		{ "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
+		{
+			"<leader>xr",
+			"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+			desc = "LSP refs/defs (Trouble)",
+		},
+		{ "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix (Trouble)" },
+	},
 })
 
 -- https://github.com/stevearc/aerial.nvim
@@ -236,15 +256,68 @@ table.insert(M, {
 			},
 
 			on_attach = function(bufnr)
-				-- Jump forwards/backwards with '{' and '}'
-				vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
-				vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
+				vim.keymap.set("n", "[a", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+				vim.keymap.set("n", "]a", "<cmd>AerialNext<CR>", { buffer = bufnr })
 			end,
 		})
 
 		-- You probably also want to set a keymap to toggle aerial
 		vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 	end,
+})
+
+table.insert(M, {
+	"dmtrKovalenko/fff.nvim",
+	build = function()
+		-- this will download prebuild binary or try to use existing rustup toolchain to build from source
+		-- (if you are using lazy you can use gb for rebuilding a plugin if needed)
+		require("fff.download").download_or_build_binary()
+	end,
+	-- if you are using nixos
+	-- build = "nix run .#release",
+	opts = { -- (optional)
+		debug = {
+			enabled = true, -- we expect your collaboration at least during the beta
+			show_scores = true, -- to help us optimize the scoring system, feel free to share your scores!
+		},
+	},
+	-- No need to lazy-load with lazy.nvim.
+	-- This plugin initializes itself lazily.
+	lazy = false,
+	keys = {
+		{
+			"ff", -- try it if you didn't it is a banger keybinding for a picker
+			function()
+				require("fff").find_files()
+			end,
+			desc = "FFFind files",
+		},
+		{
+			"fg",
+			function()
+				require("fff").live_grep()
+			end,
+			desc = "LiFFFe grep",
+		},
+		{
+			"fz",
+			function()
+				require("fff").live_grep({
+					grep = {
+						modes = { "fuzzy", "plain" },
+					},
+				})
+			end,
+			desc = "Live fffuzy grep",
+		},
+		{
+			"fc",
+			function()
+				require("fff").live_grep({ query = vim.fn.expand("<cword>") })
+			end,
+			desc = "Search current word",
+		},
+	},
 })
 
 return M

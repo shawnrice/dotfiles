@@ -25,6 +25,7 @@ local M = {
 			{ "<leader>l", group = "LSP" },
 			{ "<leader>c", group = "Code" },
 			{ "<leader>v", group = "View" },
+			{ "<leader>x", group = "Trouble" },
 			{ "<leader><leader>", group = "Session" },
 		})
 	end,

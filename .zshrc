@@ -7,6 +7,9 @@ bindkey -r '^E'
 # Make the terminal not beep
 setopt no_beep
 
+# Disable XON/XOFF flow control so Ctrl+Q and Ctrl+S reach applications
+stty -ixon
+
 function get_dots() {
   # SOURCE="${(%):-%N}"
   SOURCE=${BASH_SOURCE[0]:-${(%):-%x}}

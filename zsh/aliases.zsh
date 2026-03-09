@@ -2,6 +2,7 @@
 alias projects="cd ${HOME}/projects"
 alias p="projects"
 alias dotfiles="cd ${HOME}/projects/dotfiles"
+alias dots="cd ${HOME}/projects/dotfiles"
 
 # Config editing
 alias zshconfig="$EDITOR ~/.zshrc"
@@ -11,3 +12,5 @@ alias gco="git checkout"
 
 # Modern replacements (conditional)
 command -v eza &>/dev/null && alias ls="eza" && alias ll="eza -la" && alias la="eza -a" && alias tree="eza --tree"
+
+alias clauded="claude --dangerously-skip-permissions"
