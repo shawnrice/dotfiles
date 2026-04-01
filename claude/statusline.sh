@@ -124,6 +124,12 @@ else
     session_time=""
 fi
 
+# tsc_d status (fast: just checks if pid is alive)
+tsc_d_indicator=""
+if tsc_d_status=$(tsc_d status 2>/dev/null) && [[ "$tsc_d_status" == *"running"* ]]; then
+    tsc_d_indicator='\033[32m⚡tsc\033[0m'
+fi
+
 # Separator
 SEP='\033[2m│\033[0m'
 
@@ -148,6 +154,9 @@ if [ -n "$session_time" ]; then
 fi
 if [ "$cache_pct" -gt 0 ] 2>/dev/null; then
     line="$line $(printf '\033[2m↻ %s%%\033[0m' "$cache_pct")"
+fi
+if [ -n "$tsc_d_indicator" ]; then
+    line="$line $(printf '%b %b' "$SEP" "$tsc_d_indicator")"
 fi
 
 printf '%b' "$line"

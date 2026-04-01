@@ -2,6 +2,10 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "WebSearch",
@@ -42,7 +46,7 @@
     ],
     "defaultMode": "plan"
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -121,6 +125,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/shawn/.claude/hooks/tsc_d_check.sh",
+            "timeout": 30
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -146,5 +162,7 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "beads@beads-marketplace": true
   },
-  "skipDangerousModePermissionPrompt": true
+  "voiceEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "autoDreamEnabled": true
 }
