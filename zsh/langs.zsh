@@ -19,8 +19,9 @@ if command_exists go; then
   export PATH="${PATH}:$GOPATH/bin"
 fi
 
-# Rust
+# Rust (cargo/env may not exist if installed via rustup with non-default settings)
 source_if_exists "${HOME}/.cargo/env"
+[[ -d "${HOME}/.cargo/bin" ]] && export PATH="${HOME}/.cargo/bin:$PATH"
 
 # Yarn (may be managed by fnm/corepack)
 [[ -d "$HOME/.yarn/bin" ]] && export PATH="$HOME/.yarn/bin:$PATH"
