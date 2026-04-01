@@ -21,7 +21,6 @@ fi
 
 # Rust
 source_if_exists "${HOME}/.cargo/env"
-export PATH="$PATH:${HOME}/.cargo/bin"
 
 # Yarn (may be managed by fnm/corepack)
 [[ -d "$HOME/.yarn/bin" ]] && export PATH="$HOME/.yarn/bin:$PATH"

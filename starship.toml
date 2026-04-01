@@ -25,20 +25,20 @@ variable = "ENV_INDICATOR"
 format = "[$env_value](bold green) "
 
 [directory]
-style = "bold cyan"  # Blue
+style = "bold cyan"
 read_only = " 󰌾"
 truncate_to_repo = true
 truncation_length = 3
 
 [git_branch]
 format = "[$symbol$branch]($style) "
-style = "bold purple"                    # Bright Black
+style = "bold purple"
 # symbol = " " # Nerd Font symbol for git branch
 symbol = " "
 
 [git_status]
 format = '([$all_status$ahead_behind]($style) )'
-style = "bold yellow"                                # Red
+style = "bold yellow"
 
 # Minimal branch operations
 ahead = " "         # Simple up arrow
@@ -72,30 +72,27 @@ up_to_date = "✓ "    # Checkmark for clean repo
 
 [git_metrics]
 format = '([+$added]($added_style) )([-$deleted]($deleted_style) )'
-# added_style = "#9b9329" # Green
-added_style = "yellow" # Green
-
-# deleted_style = "#a04363" # Red
-deleted_style = "bold yellow" # Red
+added_style = "yellow"
+deleted_style = "bold yellow"
 
 disabled = false
 only_nonzero_diffs = true
 
 [cmd_duration]
 format = "[took $duration]($style) "
-style = "bold purple"                    # Bright Black
+style = "bold purple"
 min_time = 500
-# style = "#bf7a29" # Yellow
 
 [status]
 disabled = false
 format = "[$symbol$status]($style) "
-style = "bold yellow"                    # Red
+style = "bold yellow"
 symbol = "✗"
 
 [character]
-success_symbol = "[❯](bold green)" # Green
-error_symbol = "[❯](bold red)"   # Red
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vicmd_symbol = "[❮](bold yellow)"
 
 # Probably unused
 

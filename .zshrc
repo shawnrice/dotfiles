@@ -90,15 +90,6 @@ fns() {
   fi
 }
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 DOTS="$(get_dots)"
 unset get_dots
@@ -120,9 +111,6 @@ elif [[ -d /usr/local/Homebrew ]]; then
   BREW_PREFIX=/usr/local
 fi
 
-# Load Oh-My-Zsh first
-# builtin source "${DOTS}/zsh/omz.zsh"
-
 builtin source "${DOTS}/zsh/cmp.zsh" # Add more completion
 
 builtin source "${DOTS}/zsh/aliases.zsh"
@@ -139,8 +127,6 @@ builtin source "${DOTS}/zsh/langs.zsh" # Bun, dotnet, go, rust, yarn
 
 builtin source "${DOTS}/zsh/nvim.zsh"
 
-# eval $(thefuck --alias)
-
 # Cached zoxide init (regenerates if binary changes)
 _zoxide_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zoxide_init.zsh"
 if command_exists zoxide; then
@@ -152,23 +138,6 @@ if command_exists zoxide; then
   unset _zoxide_bin
 fi
 unset _zoxide_cache
-
-# LISTMAX=0
-# unsetopt LIST_AMBIGUOUS MENU_COMPLETE COMPLETE_IN_WORD
-# setopt AUTO_MENU AUTO_LIST LIST_PACKED
-# unambigandmenu() {
-#   echo -n "\e[31m...\e[0m"
-#   # avoid opening the list on the first expand
-#   unsetopt AUTO_LIST
-#   zle expand-or-complete
-#   setopt AUTO_LIST
-#   zle magic-space
-#   zle backward-delete-char
-#   zle expand-or-complete
-#   zle redisplay
-# }
-# zle -N unambigandmenu
-# bindkey "^i" unambigandmenu
 
 
 # Configure colors for the 'ls' command output. This makes different types of files and directories 
@@ -188,19 +157,7 @@ unset _zoxide_cache
 export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
 export LANG="en_US.UTF-8"
-export LC_CTYPE="en_US.UTF-8"
-export LC_NUMERIC="en_US.UTF-8"
-export LC_TIME="en_US.UTF-8"
-export LC_COLLATE="en_US.UTF-8"
-export LC_MONETARY="en_US.UTF-8"
-export LC_MESSAGES="en_US.UTF-8"
-export LC_PAPER="en_US.UTF-8"
-export LC_NAME="en_US.UTF-8"
-export LC_ADDRESS="en_US.UTF-8"
-export LC_TELEPHONE="en_US.UTF-8"
-export LC_MEASUREMENT="en_US.UTF-8"
-export LC_IDENTIFICATION="en_US.UTF-8"
-export LC_ALL=
+export LC_ALL="en_US.UTF-8"
 
 # Untracked things for the work computer
 source_if_exists "${DOTS}/zsh/work/aliases.zsh"
@@ -217,13 +174,3 @@ echo "Loaded in ${SECONDS} seconds"
 unset SECONDS
 
 # === BELOW THIS LINE IS CRAP THAT HAS BEEN ADDED TO THIS FILE BY DUMB PROGRAMS ===
-
-
-# peon-ping quick controls
-alias peon="bash ~/.claude/hooks/peon-ping/peon.sh"
-[ -f ~/.claude/hooks/peon-ping/completions.bash ] && source ~/.claude/hooks/peon-ping/completions.bash
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/shawn/.lmstudio/bin"
-# End of LM Studio CLI section
-
